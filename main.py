@@ -9,6 +9,9 @@ if __name__ == '__main__':
         [5.7173, 6.9957, 7.470993355, 7.887136213, 8.396777409, 9.014936877, 10.14196013, 11.27405316, 11.85744186,
          12.1, 12.10207641, 12.10166113, 12.10111296, 12.10069767, 12.10004983, 12.09983389, 12.09961794, 12.09928571,
          12.09950166, 12.09960133, 12.09965116, 12.09975083, 12.09945183, 12.09956811])
+
+    rotational_frequancies = rotational_frequancies / 60 * 2 * np.pi
+
     pitch_angles = np.array(
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3.83, 6.6, 8.7, 10.45, 12.06, 13.54, 14.92, 16.23, 17.47, 18.68, 19.85, 21.02,
          22.12, 23.15])
@@ -21,9 +24,6 @@ if __name__ == '__main__':
     plt.figure()
 
     for v, omega, pitch in zip(v0, rotational_frequancies, pitch_angles):
-        if v < 10:
-            continue
-
         r, FN, FT, P = BEM(v, omega, pitch)
 
         res = structural_model.calculate_time_response(
