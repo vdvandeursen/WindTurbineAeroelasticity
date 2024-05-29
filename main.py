@@ -1,16 +1,18 @@
-# This is a sample Python script.
+from scipy import integrate
+import numpy as np
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+from shape_functions import Polynomial
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    phi_1f = Polynomial(coefficients=[
+        0, 0, 0.0622, 1.7254, -3.2452, 4.7131, -2.2555
+    ])
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    phi_1e = Polynomial(coefficients=[
+        0, 0, 0.3627, 2.5337, -3.5772, 2.2376, -0.6952
+    ])
+
+    r_R = np.linspace(0, 1, 100)
+
+    M_1f = integrate.trapz(r_R)
