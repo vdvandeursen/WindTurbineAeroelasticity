@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from scipy.interpolate import interp1d
-from math import acos, exp, sqrt, atan, cos, sin, radians, degrees
+from numpy import arccos, exp, sqrt, arctan, cos, sin, radians, degrees
 
 def BEM(v0, omega, pitch):
     # Constants
@@ -52,7 +52,7 @@ def BEM(v0, omega, pitch):
             numite += 1
             a = ax
             a_prime = ax_prime
-            Phi = atan((1 - a) * v0 / ((1 + a_prime) * r * omega))
+            Phi = arctan((1 - a) * v0 / ((1 + a_prime) * r * omega))
             Phi = degrees(Phi)
             Alpha = Phi - Theta - pitch
             interp_Cl = interp1d(alpha, Cl, fill_value="extrapolate")
@@ -62,9 +62,9 @@ def BEM(v0, omega, pitch):
             Cn = Cla * cos(radians(Phi)) + Cda * sin(radians(Phi))
             Ct = Cla * sin(radians(Phi)) - Cda * cos(radians(Phi))
             f_tiploss = B / 2 * (R - r) / (r * sin(radians(Phi)))
-            F_tiploss = (2 / np.pi) * acos(exp(-f_tiploss))
+            F_tiploss = (2 / np.pi) * arccos(exp(-f_tiploss))
             f_hubloss = B / 2 * (r - hubrad) / (r * sin(radians(Phi)))
-            F_hubloss = (2 / np.pi) * acos(exp(-f_hubloss))
+            F_hubloss = (2 / np.pi) * arccos(exp(-f_hubloss))
             F = F_tiploss * F_hubloss
             ac = 0.2
             if ax > ac:
@@ -83,14 +83,5 @@ def BEM(v0, omega, pitch):
 
     M = sum(Mx)  # rotor torque from one blade
     P = M * omega * 3 * 0.944  # Power calculation
-    return Rx, FN, FT, P
+    return Rx/R, FN, FT, P
 
-# Example usage:
-v0 = 10  # inflow wind speed in m/s
-omega = 1  # rotational speed in rad/s
-pitch = 2  # pitch angle in degrees
-Rx, FN, FT, P = BEM(v0, omega, pitch)
-print('Radius:', Rx)
-print('Normal Force:', FN)
-print('Tangential Force:', FT)
-print('Power:', P)
