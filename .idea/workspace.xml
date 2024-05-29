@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="687e0206-750b-414c-aadd-88a0165e4019" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="687e0206-750b-414c-aadd-88a0165e4019" name="Changes" comment="Added blade data" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -40,9 +38,15 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master"
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/roele/PycharmProjects/WindTurbineAeroelasticity"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\roele\PycharmProjects\WindTurbineAeroelasticity" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="WindTurbineAeroelasticity" />
@@ -83,7 +87,20 @@
       <option name="presentableId" value="Default" />
       <updated>1716969535815</updated>
     </task>
+    <task id="LOCAL-00001" summary="Added blade data">
+      <option name="closed" value="true" />
+      <created>1716971004498</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1716971004498</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added blade data" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added blade data" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
