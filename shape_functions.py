@@ -11,50 +11,23 @@ class Polynomial:
 
         self.coefficients = coefficients
 
-    def f(self, s):
-        x = 0
+    def f(self, r):
+        f = 0
         for i, c in enumerate(self.coefficients):
-            x += c * s ** i
+            f += c * r ** i
 
-        return x
+        return f
 
-    def df_ds(self, s):
-        df_ds = 0
+    def df_dr(self, r):
+        dr_dr = 0
         for i, c in enumerate(self.coefficients[1:]):
-            df_ds += c * s ** i
+            dr_dr += c * r ** i
 
-        return df_ds
+        return dr_dr
 
-    def d2f_ds2(self, s):
-        d2f_ds2 = 0
+    def d2f_dr2(self, r):
+        d2f_dr2 = 0
         for i, c in enumerate(self.coefficients[2:]):
-            d2f_ds2 += c * s ** i
+            d2f_dr2 += c * r ** i
 
-        return d2f_ds2
-
-
-
-def phi_1f(r, R):
-    ratio = r / R
-    result = (
-            0.0622 * ratio ** 2 +
-            1.7254 * ratio ** 3 -
-            3.2452 * ratio ** 4 +
-            4.7131 * ratio ** 5 -
-            2.2555 * ratio ** 6
-    )
-    return result
-
-def phi_1e(r, R):
-    ratio = r / R
-
-    # Evaluate the polynomial
-    result = (
-            0.3627 * ratio ** 2 +
-            2.5337 * ratio ** 3 -
-            3.5772 * ratio ** 4 +
-            2.2376 * ratio ** 5 -
-            0.6952 * ratio ** 6
-    )
-
-    return result
+        return d2f_dr2
