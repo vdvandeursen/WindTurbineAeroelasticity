@@ -17,26 +17,26 @@ if __name__ == '__main__':
 
     print(f'Nat freqs: {structural_model.natural_frequencies}')
 
-    labels = ['flap displ', 'flap velocity', 'edge displ', 'edge velocity']
+    labels = ['flap displ', 'edge displ', 'flap velocity', 'edge velocity']
     plt.figure()
 
     for v, omega, pitch in zip(v0, rotational_frequancies, pitch_angles):
         if v < 10:
             continue
 
-        r_R, FN, FT, P = BEM(v, omega, pitch)
+        r, FN, FT, P = BEM(v, omega, pitch)
 
         res = structural_model.calculate_time_response(
-            time_span=(0, 0.1),
+            timestamps=np.linspace(0, 500, 20000),
             f_flap=FN,
             f_edge=FT,
-            r_R=r_R
+            r=r
         )
 
         for i in range(4):
             plt.plot(res.t, res.y[i, :], label=f'{labels[i]} for {v} m/s')
 
-        print('Radius:', r_R)
+        print('Radius:', r)
         print('Normal Force:', FN)
         print('Tangential Force:', FT)
         print('Power:', P)
