@@ -37,9 +37,9 @@ if __name__ == '__main__':
         #     plt.plot(res.t, res.y[i, :], label=f'{labels[i]} for {v} m/s')
         flap_dis.append(res.y[0,-1])
         edge_dis.append(res.y[1,-1])
-    print("a")
     # plt.legend()
     # plt.show()
+
     plt.plot(v0,flap_dis,label="Flapwise Displacement at the tip")
     plt.plot(v0,edge_dis,label="Edgewise Displacement at the tip")
     plt.legend()
