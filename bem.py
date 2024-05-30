@@ -28,6 +28,9 @@ def BEM(v0, omega, pitch):
     Rx = np.zeros(n_sections)
     FN = np.zeros(n_sections)
     FT = np.zeros(n_sections)
+    Ff = np.zeros(n_sections)
+    Fe = np.zeros(n_sections)
+    L = np.zeros(n_sections)
     Mx = np.zeros(n_sections)
 
     # Main loop: from root to tip section
@@ -97,9 +100,12 @@ def BEM(v0, omega, pitch):
         # force in two directions and bending moment
         FN[i] = 0.5 * rou * ((r * omega * (1 + a_prime)) ** 2 + (v0 * (1 - a)) ** 2) * chord * Cn * dr
         FT[i] = 0.5 * rou * ((r * omega * (1 + a_prime)) ** 2 + (v0 * (1 - a)) ** 2) * chord * Ct * dr
+        L[i] = np.sqrt(FN[i]**2 + FT[i]**2)
+        Ff[i] = np.cos(np.radians(theta_deg + pitch))*L[i]/B
+        Fe[i] = np.sin(np.radians(theta_deg + pitch))*L[i]/B
         Mx[i] = FT[i] * r
         Rx[i] = r
 
     M = sum(Mx)  # rotor torque from one blade
     P = M * omega * 3 * 0.944  # Power calculation
-    return Rx, FN, FT, P
+    return Rx, Ff, Fe, P

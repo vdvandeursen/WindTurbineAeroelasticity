@@ -5,13 +5,13 @@ import pandas as pd
 
 dof_settings = {
     'flap': {
-        'EI': 'FlpStff',
+        'EI': 'FlpStff\r',
         'damping_ratio': 0.477465/100,
         'coefficients': [0, 0, 0.0622, 1.7254, -3.2452, 4.7131, -2.2555]  # a + bx + cx**2 + dx**3 etc
     },
     'edge':
         {
-            'EI': 'EdgStff',
+            'EI': 'EdgStff\r',
             'damping_ratio': 0.477465/100,
             'coefficients': [0, 0, 0.3627, 2.5337, -3.5772, 2.2376, -0.6952]
         },
@@ -23,9 +23,9 @@ class StructuralModel:
         structural_data = pd.read_csv(filepath, header=0)
         structural_data.columns = [col.split('\n')[0] for col in structural_data.columns]
 
-        r = structural_data['Radius'].to_numpy()
-        rho_A = structural_data['BMassDen'].to_numpy()
-        self.R = structural_data['Radius'].iloc[-1]
+        r = structural_data['Radius\r'].to_numpy()
+        rho_A = structural_data['BMassDen\r'].to_numpy()
+        self.R = structural_data['Radius\r'].iloc[-1]
         self.mass_matrix = np.eye(2)
         self.stiffness_matrix = np.eye(2)
         self.damping_matrix = np.eye(2)

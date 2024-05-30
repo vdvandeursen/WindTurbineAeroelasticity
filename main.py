@@ -22,24 +22,30 @@ if __name__ == '__main__':
 
     labels = ['flap displ', 'edge displ', 'flap velocity', 'edge velocity']
     plt.figure()
-
+    flap_dis = []
+    edge_dis = []
     for v, omega, pitch in zip(v0, rotational_frequancies, pitch_angles):
-        r, FN, FT, P = BEM(v, omega, pitch)
+        r, Ff, Fe, P = BEM(v, omega, pitch)
 
         res = structural_model.calculate_time_response(
-            timestamps=np.linspace(0, 500, 20000),
-            f_flap=FN,
-            f_edge=FT,
+            timestamps=np.linspace(0, 500, 2000),
+            f_flap=Ff,
+            f_edge=Fe,
             r=r
         )
 
-        for i in range(4):
-            plt.plot(res.t, res.y[i, :], label=f'{labels[i]} for {v} m/s')
+        # for i in range(4):
+        #     plt.plot(res.t, res.y[i, :], label=f'{labels[i]} for {v} m/s')
+        flap_dis.append(res.y[0,-1])
+        edge_dis.append(res.y[1,-1])
 
-        print('Radius:', r)
-        print('Normal Force:', FN)
-        print('Tangential Force:', FT)
-        print('Power:', P)
 
-        plt.legend()
-        plt.show()
+        # plt.legend()
+        # plt.show()
+    plt.plot(v0,flap_dis,label="Flapwise Displacement")
+    plt.plot(v0,edge_dis,label="Edgewise Displacement")
+    plt.legend()
+    plt.grid()
+    plt.xlabel("Wind Speed [m/s]")
+    plt.ylabel("Displacement [m]")
+    plt.show()
