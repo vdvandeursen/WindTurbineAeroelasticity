@@ -1,7 +1,7 @@
 from scipy import integrate
 import numpy as np
 import pandas as pd
-
+from bem import BEM
 
 dof_settings = {
     'flap': {
@@ -30,6 +30,7 @@ class StructuralModel:
         self.stiffness_matrix = np.eye(2)
         self.damping_matrix = np.eye(2)
         self.force_vector = []
+        self.force_vector_list = []
         self.shape_functions = []
 
         for i, (dof, settings) in enumerate(dof_settings.items()):
@@ -56,14 +57,13 @@ class StructuralModel:
 
         self.force_vector = np.array(force_vect)
 
-    def calculate_time_response(self, timestamps, f_edge, f_flap, r):
+    def calculate_time_response_constant_velocity(self, timestamps, f_edge, f_flap, r):
         self.__set_force_vector(f_edge=f_edge, f_flap=f_flap, r=r)
 
         for i, _ in enumerate(self.force_vector):
             def _ivp(t, y):
                 x = y[:2]
                 x_dot = y[2:]
-
                 x_ddot = np.linalg.inv(self.mass_matrix) @ (self.force_vector - self.damping_matrix @ x_dot - self.stiffness_matrix @ x)
                 return np.concatenate((x_dot, x_ddot))
 
@@ -75,6 +75,32 @@ class StructuralModel:
 
             return res
 
+    def calculate_time_response_varying_velocity(self, timestamps):
+        self.force_vector_list = []
+        for t in timestamps:
+            v0 = 15 + 0.5 *np.cos(1.267*t)+ 0.085*np.cos(2.534*t)+0.015*np.cos(3.801*t)
+            r, f_flap, f_edge, P = BEM(v0, 12.06/ 60 * 2 * np.pi, 1045.)
+            self.__set_force_vector(f_edge=f_edge,f_flap=f_flap,r=r)
+            self.force_vector_list.append(self.force_vector)
+
+        for i, _ in enumerate(self.force_vector):
+            print(i)
+
+            def _ivp(t, y):
+                x = y[:2]
+                x_dot = y[2:]
+                j = int(t/(timestamps[-1]-timestamps[-2]))
+                x_ddot = np.linalg.inv(self.mass_matrix) @ (
+                            self.force_vector_list[j] - self.damping_matrix @ x_dot - self.stiffness_matrix @ x)
+                return np.concatenate((x_dot, x_ddot))
+
+            initial_conditions = np.array([
+                0, 0, 0, 0
+            ])
+            t_span = timestamps[0], timestamps[-1]
+            res = integrate.solve_ivp(_ivp, t_span, initial_conditions, t_eval=timestamps)
+
+            return res
 
 class ShapeFunction:
     def __init__(self, coefficients: list, R):

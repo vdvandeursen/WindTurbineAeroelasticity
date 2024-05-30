@@ -26,8 +26,7 @@ if __name__ == '__main__':
     edge_dis = []
     for v, omega, pitch in zip(v0, rotational_frequancies, pitch_angles):
         r, Ff, Fe, P = BEM(v, omega, pitch)
-
-        res = structural_model.calculate_time_response(
+        res = structural_model.calculate_time_response_constant_velocity(
             timestamps=np.linspace(0, 500, 2000),
             f_flap=Ff,
             f_edge=Fe,
@@ -38,14 +37,22 @@ if __name__ == '__main__':
         #     plt.plot(res.t, res.y[i, :], label=f'{labels[i]} for {v} m/s')
         flap_dis.append(res.y[0,-1])
         edge_dis.append(res.y[1,-1])
-
-
-        # plt.legend()
-        # plt.show()
-    plt.plot(v0,flap_dis,label="Flapwise Displacement")
-    plt.plot(v0,edge_dis,label="Edgewise Displacement")
+    print("a")
+    # plt.legend()
+    # plt.show()
+    plt.plot(v0,flap_dis,label="Flapwise Displacement at the tip")
+    plt.plot(v0,edge_dis,label="Edgewise Displacement at the tip")
     plt.legend()
     plt.grid()
     plt.xlabel("Wind Speed [m/s]")
     plt.ylabel("Displacement [m]")
+    plt.show()
+
+    res = structural_model.calculate_time_response_varying_velocity(timestamps=np.linspace(0, 200, 2000))
+    for i in range(4):
+        plt.plot(res.t, res.y[i, :], label=f'{labels[i]} for 15 m/s')
+    plt.legend()
+    plt.grid()
+    plt.xlabel("Time [s]")
+    plt.ylabel("Tip displacement & Speed [m] / [m/s]")
     plt.show()
