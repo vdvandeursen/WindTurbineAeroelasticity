@@ -4,8 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="687e0206-750b-414c-aadd-88a0165e4019" name="Changes" comment="Changed BEM to output Edgewise and Flapwise Forces (per blade) and changed main code to make static plots 3-25 m/s">
+    <list default="true" id="687e0206-750b-414c-aadd-88a0165e4019" name="Changes" comment="fixed issue magnitude pitch">
+      <change afterPath="$PROJECT_DIR$/Shape_function.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/WindTurbineAeroelasticity.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WindTurbineAeroelasticity.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bem.py" beforeDir="false" afterPath="$PROJECT_DIR$/bem.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/structural_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/structural_model.py" afterDir="false" />
     </list>
@@ -13,6 +17,13 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -29,6 +40,9 @@
     &quot;accountId&quot;: &quot;b3bab87f-8668-42be-8326-c732d75d6612&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/anaconda3/Lib/site-packages/pandas/core/indexes/base.py" root0="SKIP_INSPECTION" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -62,8 +76,9 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="C:\Users\roele\anaconda3" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
@@ -116,14 +131,43 @@
       <option name="project" value="LOCAL" />
       <updated>1717062610685</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added dynamic results">
+      <option name="closed" value="true" />
+      <created>1717076643647</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1717076643647</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fixed issue magnitude pitch">
+      <option name="closed" value="true" />
+      <created>1717076793844</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1717076793844</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added blade data" />
     <MESSAGE value="shape functions early work" />
     <MESSAGE value="Changed BEM to output Edgewise and Flapwise Forces (per blade) and changed main code to make static plots 3-25 m/s" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed BEM to output Edgewise and Flapwise Forces (per blade) and changed main code to make static plots 3-25 m/s" />
+    <MESSAGE value="Added dynamic results" />
+    <MESSAGE value="fixed issue magnitude pitch" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed issue magnitude pitch" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

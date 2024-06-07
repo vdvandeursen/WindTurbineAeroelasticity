@@ -2,8 +2,9 @@ import numpy as np
 import pandas as pd
 from scipy.interpolate import interp1d
 from numpy import arccos, exp, sqrt, arctan, cos, sin, radians, degrees
+from Shape_function import ShapeFunction
 
-def BEM(v0, omega, pitch):
+def BEM(v0, omega, pitch,Vf="no input",Ve="no input",shape_functions="no input"):
     # Constants
     B = 3  # number of blades
     R = 63  # rotor radius
@@ -11,6 +12,7 @@ def BEM(v0, omega, pitch):
     rou = 1.225  # density of air
     EPS = 0.00001  # iterative precision tolerance
 
+    #indcutions
     a = 0
     a_prime = 0
 
@@ -25,18 +27,37 @@ def BEM(v0, omega, pitch):
         airfoil_data.append(pd.read_csv(file).to_numpy())
 
     n_sections = len(blade_sections)  # Number of blade sections
+
+    #set blade and flapwise arrays to 0 if there is no input
+    if isinstance(Vf, str):
+        Vf = 0
+    if isinstance(Ve, str):
+        Ve = 0
+    if isinstance(shape_functions, str):
+        shape_functions = []
+        shape_functions.append(ShapeFunction([0],R))
+        shape_functions.append(ShapeFunction([0],R))
+
+
     Rx = np.zeros(n_sections)
     FN = np.zeros(n_sections)
     FT = np.zeros(n_sections)
     Ff = np.zeros(n_sections)
     Fe = np.zeros(n_sections)
-    L = np.zeros(n_sections)
     Mx = np.zeros(n_sections)
 
     # Main loop: from root to tip section
     for i, blade_section in enumerate(blade_sections):
         _, airfoil, r, dr, theta_deg, chord = blade_section
         airfoil_index = int(airfoil) - 1
+
+        #Determine flapwise and edgwise velocities at location r using shape function
+        Vf_i = Ve * shape_functions[0].f(r)
+        Ve_i = Vf  *shape_functions[1].f(r)
+
+        # Blade velocity (Translate to normal and tangential)
+        Vtb = np.cos(np.radians(theta_deg + pitch)) * Ve_i + np.sin(np.radians(theta_deg + pitch)) * Vf_i
+        Vnb = np.cos(np.radians(theta_deg + pitch)) * Vf_i - np.sin(np.radians(theta_deg + pitch)) * Ve_i
 
         # Airfoil data
         alphas = airfoil_data[airfoil_index][:, 0]  # Degrees!
@@ -58,7 +79,7 @@ def BEM(v0, omega, pitch):
             #  record results of last step
             a = ax
             a_prime = ax_prime
-            phi = arctan((1 - a) * v0 / ((1 + a_prime) * r * omega))
+            phi = arctan(((1 - a) * v0 + Vnb )/ ((1 + a_prime) * r * omega - Vtb))
             alpha_deg = np.degrees(phi) - theta_deg - pitch
 
             # find Cl and Cd
@@ -100,9 +121,8 @@ def BEM(v0, omega, pitch):
         # force in two directions and bending moment
         FN[i] = 0.5 * rou * ((r * omega * (1 + a_prime)) ** 2 + (v0 * (1 - a)) ** 2) * chord * Cn * dr
         FT[i] = 0.5 * rou * ((r * omega * (1 + a_prime)) ** 2 + (v0 * (1 - a)) ** 2) * chord * Ct * dr
-        L[i] = np.sqrt(FN[i]**2 + FT[i]**2)
-        Ff[i] = np.cos(np.radians(theta_deg + pitch))*L[i]/B
-        Fe[i] = np.sin(np.radians(theta_deg + pitch))*L[i]/B
+        Ff[i] = np.cos(np.radians(theta_deg + pitch))*FN[i] + np.sin(np.radians(theta_deg + pitch))*FT[i]
+        Fe[i] = np.cos(np.radians(theta_deg + pitch))*FT[i] - np.sin(np.radians(theta_deg + pitch))*FN[i]
         Mx[i] = FT[i] * r
         Rx[i] = r
 
