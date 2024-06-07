@@ -25,7 +25,7 @@ if __name__ == '__main__':
     flap_dis = []
     edge_dis = []
     for v, omega, pitch in zip(v0, rotational_frequancies, pitch_angles):
-        r, Ff, Fe, P = BEM(v, omega, pitch)
+        r, Ff, Fe = BEM(v, omega, pitch)
         res = structural_model.calculate_time_response_constant_velocity(
             timestamps=np.linspace(0, 500, 2000),
             f_flap=Ff,

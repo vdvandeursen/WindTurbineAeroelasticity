@@ -128,4 +128,4 @@ def BEM(v0, omega, pitch,Vf="no input",Ve="no input",shape_functions="no input")
 
     M = sum(Mx)  # rotor torque from one blade
     P = M * omega * 3 * 0.944  # Power calculation
-    return Rx, Ff, Fe, P
+    return Rx, Ff, Fe,

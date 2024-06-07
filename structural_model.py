@@ -80,7 +80,7 @@ class StructuralModel:
         for t in timestamps:
             v0 = 15 + 0.5 *np.cos(1.267*t)+ 0.085*np.cos(2.534*t)+0.015*np.cos(3.801*t)
 
-            r, f_flap, f_edge, P = BEM(v0, 12.06/ 60 * 2 * np.pi, 10.45)
+            r, f_flap, f_edge = BEM(v0, 12.06/ 60 * 2 * np.pi, 10.45)
             self.__set_force_vector(f_edge=f_edge,f_flap=f_flap,r=r)
             self.force_vector_list.append(self.force_vector)
 
