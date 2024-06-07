@@ -32,7 +32,8 @@ class StructuralModel:
         self.force_vector = []
         self.force_vector_list = []
         self.shape_functions = []
-
+        self.Vf = 0
+        self.Ve = 0
         for i, (dof, settings) in enumerate(dof_settings.items()):
             phi = ShapeFunction(coefficients=settings['coefficients'], R=self.R)
             EI = structural_data[settings['EI']].to_numpy()
@@ -57,23 +58,20 @@ class StructuralModel:
 
         self.force_vector = np.array(force_vect)
 
-    def calculate_time_response_constant_velocity(self, timestamps, f_edge, f_flap, r):
-        self.__set_force_vector(f_edge=f_edge, f_flap=f_flap, r=r)
-
+    def calculate_time_response_static_load(self, timestamps,initial_conditions,V0,omega,pitch):
+        r, Ff, Fe = BEM(V0,omega,pitch,self.Vf,self.Ve,self.shape_functions)
+        self.__set_force_vector(f_edge=Fe, f_flap=Ff, r=r)
         for i, _ in enumerate(self.force_vector):
             def _ivp(t, y):
                 x = y[:2]
                 x_dot = y[2:]
                 x_ddot = np.linalg.inv(self.mass_matrix) @ (self.force_vector - self.damping_matrix @ x_dot - self.stiffness_matrix @ x)
                 return np.concatenate((x_dot, x_ddot))
+        t_span = timestamps[0], timestamps[-1]
+        res = integrate.solve_ivp(_ivp, t_span, initial_conditions, t_eval=timestamps)
 
-            initial_conditions = np.array([
-                1.18, 0.29, 0, 0
-            ])
-            t_span = timestamps[0], timestamps[-1]
-            res = integrate.solve_ivp(_ivp, t_span, initial_conditions, t_eval=timestamps)
+        return res
 
-            return res
 
     def calculate_time_response_varying_velocity(self, timestamps):
         self.force_vector_list = []
