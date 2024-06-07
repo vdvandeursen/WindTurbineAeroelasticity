@@ -4,15 +4,16 @@ from scipy.interpolate import interp1d
 from numpy import arccos, exp, sqrt, arctan, cos, sin, radians, degrees
 from Shape_function import ShapeFunction
 
-def BEM(v0, omega, pitch,Vf="no input",Ve="no input",shape_functions="no input"):
+
+def BEM(v0, omega, pitch, Vf="no input", Ve="no input", shape_functions="no input"):
     # Constants
     B = 3  # number of blades
     R = 63  # rotor radius
     hubrad = 1.5  # hub radius
     rou = 1.225  # density of air
-    EPS = 0.00001  # iterative precision tolerance
-
-    #indcutions
+    EPS = 0.001  # iterative precision tolerance
+    MAX_ITER = 1000
+    # Initial inductions
     a = 0
     a_prime = 0
 
@@ -28,16 +29,15 @@ def BEM(v0, omega, pitch,Vf="no input",Ve="no input",shape_functions="no input")
 
     n_sections = len(blade_sections)  # Number of blade sections
 
-    #set blade and flapwise arrays to 0 if there is no input
+    # Set blade and flapwise arrays to 0 if there is no input
     if isinstance(Vf, str):
         Vf = 0
     if isinstance(Ve, str):
         Ve = 0
     if isinstance(shape_functions, str):
         shape_functions = []
-        shape_functions.append(ShapeFunction([0],R))
-        shape_functions.append(ShapeFunction([0],R))
-
+        shape_functions.append(ShapeFunction([0], R))
+        shape_functions.append(ShapeFunction([0], R))
 
     Rx = np.zeros(n_sections)
     FN = np.zeros(n_sections)
@@ -51,9 +51,9 @@ def BEM(v0, omega, pitch,Vf="no input",Ve="no input",shape_functions="no input")
         _, airfoil, r, dr, theta_deg, chord = blade_section
         airfoil_index = int(airfoil) - 1
 
-        #Determine flapwise and edgwise velocities at location r using shape function
+        # Determine flapwise and edgewise velocities at location r using shape function
         Vf_i = Ve * shape_functions[0].f(r)
-        Ve_i = Vf  *shape_functions[1].f(r)
+        Ve_i = Vf * shape_functions[1].f(r)
 
         # Blade velocity (Translate to normal and tangential)
         Vtb = np.cos(np.radians(theta_deg + pitch)) * Ve_i + np.sin(np.radians(theta_deg + pitch)) * Vf_i
@@ -66,27 +66,26 @@ def BEM(v0, omega, pitch,Vf="no input",Ve="no input",shape_functions="no input")
         interp_Cl = interp1d(alphas, lift_coefficients, fill_value="extrapolate")
         interp_Cd = interp1d(alphas, drag_coefficients, fill_value="extrapolate")
 
-        Sigma = chord * B / (2 * np.pi * r)  # solidity
-        ax = a  # change value
-        ax_prime = a_prime  # change value
-        a = ax - 10 * EPS  # generate error, active iteration
-        a_prime = ax_prime - 10 * EPS  # generate error, active iteration
-
+        Sigma = chord * B / (2 * np.pi * r)  # Solidity
+        ax = a  # Change value
+        ax_prime = a_prime  # Change value
+        a = ax - 10 * EPS  # Generate error, active iteration
+        a_prime = ax_prime - 10 * EPS  # Generate error, active iteration
         numite = 0
-        while abs(ax - a) >= EPS or abs(ax_prime - a_prime) >= EPS:
+        while (abs(ax - a) >= EPS or abs(ax_prime - a_prime) >= EPS) and numite < MAX_ITER:
             numite += 1
 
-            #  record results of last step
-            a = ax
-            a_prime = ax_prime
-            phi = arctan(((1 - a) * v0 + Vnb )/ ((1 + a_prime) * r * omega - Vtb))
+            # Record results of last step
+            a = 0.8 * a + 0.2 * ax
+            a_prime = 0.8 * a_prime + 0.2 * ax_prime
+            phi = arctan(((1 - a) * v0 + Vnb) / ((1 + a_prime) * r * omega - Vtb))
             alpha_deg = np.degrees(phi) - theta_deg - pitch
 
-            # find Cl and Cd
+            # Find Cl and Cd
             lift_coefficient = interp_Cl(alpha_deg)
             drag_coefficient = interp_Cd(alpha_deg)
 
-            # projection in and out of plane
+            # Projection in and out of plane
             Cn = lift_coefficient * cos(phi) + drag_coefficient * sin(phi)
             Ct = lift_coefficient * sin(phi) - drag_coefficient * cos(phi)
 
@@ -97,7 +96,7 @@ def BEM(v0, omega, pitch,Vf="no input",Ve="no input",shape_functions="no input")
             F_hubloss = (2 / np.pi) * arccos(exp(-f_hubloss))
             F = F_tiploss * F_hubloss
 
-            if np.isnan(F):
+            if np.isnan(F) or F < EPS:
                 F = 1
 
             # Glauert correction
@@ -109,23 +108,27 @@ def BEM(v0, omega, pitch,Vf="no input",Ve="no input",shape_functions="no input")
                 ax = 1 / (4 * F * (sin(phi)) ** 2 / (Sigma * Cn) + 1)
             ax_prime = 1 / (4 * F * sin(phi) * cos(phi) / (Sigma * Ct) - 1)
 
-            # in case of iterative convergence failure
+            # Handle convergence failure
             if np.isnan(ax) or np.isnan(ax_prime):
                 ax = 0.3
                 ax_prime = 0.1
+                break  # Exit the loop if NaN values persist
 
         # Update value
         a = ax
         a_prime = ax_prime
+        if np.isnan(ax) or np.isnan(ax_prime):
+            ax = 0.3
+            ax_prime = 0.1
 
-        # force in two directions and bending moment
-        FN[i] = 0.5 * rou * ((r * omega * (1 + a_prime)) ** 2 + (v0 * (1 - a)) ** 2) * chord * Cn * dr
-        FT[i] = 0.5 * rou * ((r * omega * (1 + a_prime)) ** 2 + (v0 * (1 - a)) ** 2) * chord * Ct * dr
-        Ff[i] = np.cos(np.radians(theta_deg + pitch))*FN[i] + np.sin(np.radians(theta_deg + pitch))*FT[i]
-        Fe[i] = np.cos(np.radians(theta_deg + pitch))*FT[i] - np.sin(np.radians(theta_deg + pitch))*FN[i]
+        # Force in two directions and bending moment
+        FN[i] = (0.5 * rou * ((r * omega * (1 + a_prime)) ** 2 + (v0 * (1 - a)) ** 2) * chord * Cn * dr)
+        FT[i] = (0.5 * rou * ((r * omega * (1 + a_prime)) ** 2 + (v0 * (1 - a)) ** 2) * chord * Ct * dr)
+        Ff[i] = np.cos(np.radians(theta_deg + pitch)) * FN[i] + np.sin(np.radians(theta_deg + pitch)) * FT[i]
+        Fe[i] = np.cos(np.radians(theta_deg + pitch)) * FT[i] - np.sin(np.radians(theta_deg + pitch)) * FN[i]
         Mx[i] = FT[i] * r
         Rx[i] = r
 
-    M = sum(Mx)  # rotor torque from one blade
+    M = sum(Mx)  # Rotor torque from one blade
     P = M * omega * 3 * 0.944  # Power calculation
-    return Rx, Ff, Fe,
+    return Rx, Ff/B, Fe/B

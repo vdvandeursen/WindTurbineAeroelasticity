@@ -24,17 +24,13 @@ if __name__ == '__main__':
     plt.figure()
     flap_dis = []
     edge_dis = []
-    timestamps = np.linspace(0, 500, 2000)
+    timestamps = np.linspace(0, 200, 400)
     initial_conditions = np.array([0,0,0,0])
     for v, omega, pitch in zip(v0, rotational_frequancies, pitch_angles):
         res = structural_model.calculate_time_response_static_load(timestamps,initial_conditions,v,omega,pitch)
         flap_dis.append(res.y[0,-1])
         edge_dis.append(res.y[1,-1])
 
-    # for i in range(4):
-    #     plt.plot(res.t, res.y[i, :], label=f'{labels[i]} for {v} m/s')
-    # plt.legend()
-    # plt.show()
 
     plt.plot(v0,flap_dis,label="Flapwise Displacement at the tip")
     plt.plot(v0,edge_dis,label="Edgewise Displacement at the tip")
@@ -44,9 +40,30 @@ if __name__ == '__main__':
     plt.ylabel("Displacement [m]")
     plt.show()
 
-    res = structural_model.calculate_time_response_varying_velocity(timestamps=np.linspace(0, 200, 2000))
+    timestamps = np.linspace(0, 200, 400)
+    res = structural_model.calculate_time_response_static_load(timestamps, initial_conditions, v0[13],rotational_frequancies[13],pitch_angles[13])
     for i in range(4):
         plt.plot(res.t, res.y[i, :], label=f'{labels[i]} for 15 m/s')
+    plt.legend()
+    plt.grid()
+    plt.xlabel("Time [s]")
+    plt.ylabel("Tip displacement & Speed [m] / [m/s]")
+    plt.show()
+
+    res= structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[13],rotational_frequancies[13],pitch_angles[13])
+
+    for i in range(4):
+        plt.plot(timestamps, res[i, :], label=f'{labels[i]} for 15 m/s')
+    plt.legend()
+    plt.grid()
+    plt.xlabel("Time [s]")
+    plt.ylabel("Tip displacement & Speed [m] / [m/s]")
+    plt.show()
+
+    res = structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[13],rotational_frequancies[13],pitch_angles[13],periodic="True")
+
+    for i in range(4):
+        plt.plot(timestamps, res[i, :], label=f'{labels[i]} for 15 m/s')
     plt.legend()
     plt.grid()
     plt.xlabel("Time [s]")

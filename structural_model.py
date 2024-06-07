@@ -32,8 +32,6 @@ class StructuralModel:
         self.force_vector = []
         self.force_vector_list = []
         self.shape_functions = []
-        self.Vf = 0
-        self.Ve = 0
         for i, (dof, settings) in enumerate(dof_settings.items()):
             phi = ShapeFunction(coefficients=settings['coefficients'], R=self.R)
             EI = structural_data[settings['EI']].to_numpy()
@@ -59,7 +57,9 @@ class StructuralModel:
         self.force_vector = np.array(force_vect)
 
     def calculate_time_response_static_load(self, timestamps,initial_conditions,V0,omega,pitch):
-        r, Ff, Fe = BEM(V0,omega,pitch,self.Vf,self.Ve,self.shape_functions)
+        Vf = initial_conditions[2]
+        Ve = initial_conditions[3]
+        r, Ff, Fe = BEM(V0,omega,pitch,Vf,Ve,self.shape_functions)
         self.__set_force_vector(f_edge=Fe, f_flap=Ff, r=r)
         for i, _ in enumerate(self.force_vector):
             def _ivp(t, y):
@@ -72,33 +72,23 @@ class StructuralModel:
 
         return res
 
+    def calculate_time_response_dynamic_load(self, timestamps,initial_conditions,V0,omega,pitch,periodic="False"):
+        input_conditions = initial_conditions
+        res = np.array(input_conditions).reshape(-1, 1)
+        v = V0
+        for i in range(len(timestamps)-1):
+            # print(i/len(timestamps)*100, "% done")
+            t0 = timestamps[i]
+            t1 = timestamps[i+1]
+            thalf = (t0+t1)/2
+            if periodic == "True":
+                v = V0 + 0.5 * np.cos(1.267 * thalf) + 0.085 * np.cos(2.534 * thalf) + 0.015 * np.cos(3.801 * thalf)
+            timestep = np.linspace(t0,t1,50)
+            res_step = self.calculate_time_response_static_load(timestep,input_conditions,v,omega,pitch)
+            input_conditions = res_step.y[:, -1]
+            res = np.concatenate((res, input_conditions.reshape(-1, 1)), axis=1)
+        return res
 
-    def calculate_time_response_varying_velocity(self, timestamps):
-        self.force_vector_list = []
-        for t in timestamps:
-            v0 = 15 + 0.5 *np.cos(1.267*t)+ 0.085*np.cos(2.534*t)+0.015*np.cos(3.801*t)
 
-            r, f_flap, f_edge = BEM(v0, 12.06/ 60 * 2 * np.pi, 10.45)
-            self.__set_force_vector(f_edge=f_edge,f_flap=f_flap,r=r)
-            self.force_vector_list.append(self.force_vector)
-
-        for i, _ in enumerate(self.force_vector):
-            print(i)
-
-            def _ivp(t, y):
-                x = y[:2]
-                x_dot = y[2:]
-                j = int(t/(timestamps[-1]-timestamps[-2]))
-                x_ddot = np.linalg.inv(self.mass_matrix) @ (
-                            self.force_vector_list[j] - self.damping_matrix @ x_dot - self.stiffness_matrix @ x)
-                return np.concatenate((x_dot, x_ddot))
-
-            initial_conditions = np.array([
-                3, 0.3, 0, 0
-            ])
-            t_span = timestamps[0], timestamps[-1]
-            res = integrate.solve_ivp(_ivp, t_span, initial_conditions, t_eval=timestamps)
-
-            return res
 
 
