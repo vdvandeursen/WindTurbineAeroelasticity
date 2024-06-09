@@ -56,9 +56,7 @@ class StructuralModel:
 
         self.force_vector = np.array(force_vect)
 
-    def calculate_time_response_static_load(self, timestamps,initial_conditions,V0,omega,pitch):
-        Vf = initial_conditions[2]
-        Ve = initial_conditions[3]
+    def calculate_time_response_static_load(self, timestamps,initial_conditions,V0,omega,pitch,Vf = 0, Ve = 0):
         r, Ff, Fe = BEM(V0,omega,pitch,Vf,Ve,self.shape_functions)
         self.__set_force_vector(f_edge=Fe, f_flap=Ff, r=r)
         for i, _ in enumerate(self.force_vector):
@@ -72,10 +70,12 @@ class StructuralModel:
 
         return res
 
-    def calculate_time_response_dynamic_load(self, timestamps,initial_conditions,V0,omega,pitch,periodic="False"):
+    def calculate_time_response_dynamic_load(self, timestamps,initial_conditions,V0,omega,pitch,periodic="False",blade_velocities="False"):
         input_conditions = initial_conditions
         res = np.array(input_conditions).reshape(-1, 1)
         v = V0
+        Vf = 0
+        Ve = 0
         for i in range(len(timestamps)-1):
             # print(i/len(timestamps)*100, "% done")
             t0 = timestamps[i]
@@ -84,7 +84,10 @@ class StructuralModel:
             if periodic == "True":
                 v = V0 + 0.5 * np.cos(1.267 * thalf) + 0.085 * np.cos(2.534 * thalf) + 0.015 * np.cos(3.801 * thalf)
             timestep = np.linspace(t0,t1,50)
-            res_step = self.calculate_time_response_static_load(timestep,input_conditions,v,omega,pitch)
+            if blade_velocities == "True":
+                Vf = input_conditions[2]
+                Ve = input_conditions[3]
+            res_step = self.calculate_time_response_static_load(timestep,input_conditions,v,omega,pitch,Vf,Ve)
             input_conditions = res_step.y[:, -1]
             res = np.concatenate((res, input_conditions.reshape(-1, 1)), axis=1)
         return res

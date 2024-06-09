@@ -24,14 +24,14 @@ if __name__ == '__main__':
     plt.figure()
     flap_dis = []
     edge_dis = []
-    timestamps = np.linspace(0, 200, 400)
+    timestamps = np.linspace(0, 400, 1000)
     initial_conditions = np.array([0,0,0,0])
+
+    #Static displacement for varyind wind speed 3-25 m/s
     for v, omega, pitch in zip(v0, rotational_frequancies, pitch_angles):
         res = structural_model.calculate_time_response_static_load(timestamps,initial_conditions,v,omega,pitch)
         flap_dis.append(res.y[0,-1])
         edge_dis.append(res.y[1,-1])
-
-
     plt.plot(v0,flap_dis,label="Flapwise Displacement at the tip")
     plt.plot(v0,edge_dis,label="Edgewise Displacement at the tip")
     plt.legend()
@@ -40,32 +40,42 @@ if __name__ == '__main__':
     plt.ylabel("Displacement [m]")
     plt.show()
 
-    timestamps = np.linspace(0, 200, 400)
+    #Constant velocity of 15 m/s without taking into account the blade velocity
     res = structural_model.calculate_time_response_static_load(timestamps, initial_conditions, v0[13],rotational_frequancies[13],pitch_angles[13])
     for i in range(4):
-        plt.plot(res.t, res.y[i, :], label=f'{labels[i]} for 15 m/s')
+        plt.plot(res.t, res.y[i, :], label=f'{labels[i]}')
     plt.legend()
     plt.grid()
     plt.xlabel("Time [s]")
-    plt.ylabel("Tip displacement & Speed [m] / [m/s]")
+    plt.ylabel("Tip displacement & Velocity [m] / [m/s]")
     plt.show()
 
-    res= structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[13],rotational_frequancies[13],pitch_angles[13])
-
+    #Constant velocity of 15 m/s with taking into account the blade velocity
+    res= structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[13],rotational_frequancies[13],pitch_angles[13],periodic="False",blade_velocities="True")
     for i in range(4):
-        plt.plot(timestamps, res[i, :], label=f'{labels[i]} for 15 m/s')
+        plt.plot(timestamps, res[i, :], label=f'{labels[i]}')
     plt.legend()
     plt.grid()
     plt.xlabel("Time [s]")
-    plt.ylabel("Tip displacement & Speed [m] / [m/s]")
+    plt.ylabel("Tip displacement & Velocity [m] / [m/s]")
     plt.show()
 
-    res = structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[13],rotational_frequancies[13],pitch_angles[13],periodic="True")
-
+    #Varying velocity around 15 m/s without taking into account the blade velocity
+    res = structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[13],rotational_frequancies[13],pitch_angles[13],periodic="True",blade_velocities="False")
     for i in range(4):
-        plt.plot(timestamps, res[i, :], label=f'{labels[i]} for 15 m/s')
+        plt.plot(timestamps, res[i, :], label=f'{labels[i]}')
     plt.legend()
     plt.grid()
     plt.xlabel("Time [s]")
-    plt.ylabel("Tip displacement & Speed [m] / [m/s]")
+    plt.ylabel("Tip displacement & Velocity [m] / [m/s]")
+    plt.show()
+
+    #Varying velocity around 15 m/s with taking into account the blade velocity
+    res = structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[13],rotational_frequancies[13],pitch_angles[13],periodic="True",blade_velocities="True")
+    for i in range(4):
+        plt.plot(timestamps, res[i, :], label=f'{labels[i]}')
+    plt.legend()
+    plt.grid()
+    plt.xlabel("Time [s]")
+    plt.ylabel("Tip displacement & Velocity [m] / [m/s]")
     plt.show()
