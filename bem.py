@@ -44,8 +44,8 @@ def BEM(v0, omega, pitch, Vf="no input", Ve="no input", shape_functions="no inpu
     FT = np.zeros(n_sections)
     Ff = np.zeros(n_sections)
     Fe = np.zeros(n_sections)
-    Mx = np.zeros(n_sections)
-
+    MT = np.zeros(n_sections)
+    MN = np.zeros(n_sections)
     # Main loop: from root to tip section
     for i, blade_section in enumerate(blade_sections):
         _, airfoil, r, dr, theta_deg, chord = blade_section
@@ -126,9 +126,11 @@ def BEM(v0, omega, pitch, Vf="no input", Ve="no input", shape_functions="no inpu
         FT[i] = (0.5 * rou * ((r * omega * (1 + a_prime)) ** 2 + (v0 * (1 - a)) ** 2) * chord * Ct * dr)
         Ff[i] = np.cos(np.radians(theta_deg + pitch)) * FN[i] + np.sin(np.radians(theta_deg + pitch)) * FT[i]
         Fe[i] = np.cos(np.radians(theta_deg + pitch)) * FT[i] - np.sin(np.radians(theta_deg + pitch)) * FN[i]
-        Mx[i] = FT[i] * r
+        MT[i] = FT[i] * r
+        MN[i] = FN[i] * r
         Rx[i] = r
 
-    M = sum(Mx)  # Rotor torque from one blade
-    P = M * omega * 3 * 0.944  # Power calculation
-    return Rx, Ff/B, Fe/B
+    Mt = sum(MT)  # Rotor torque
+    Mn = sum(MN)  # Root moment
+    P = Mt * omega * 3 * 0.944  # Power calculation
+    return Rx, Ff/B, Fe/B, Mn/B

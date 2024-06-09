@@ -25,11 +25,14 @@ if __name__ == '__main__':
     flap_dis = []
     edge_dis = []
     timestamps = np.linspace(0, 400, 1000)
+    N = len(timestamps)
+    T = timestamps[1] - timestamps[0]
+    frequencies = np.fft.fftfreq(N, T)
     initial_conditions = np.array([0,0,0,0])
 
     #Static displacement for varyind wind speed 3-25 m/s
     for v, omega, pitch in zip(v0, rotational_frequancies, pitch_angles):
-        res = structural_model.calculate_time_response_static_load(timestamps,initial_conditions,v,omega,pitch)
+        res, Mn, FF, FE = structural_model.calculate_time_response_static_load(timestamps,initial_conditions,v,omega,pitch)
         flap_dis.append(res.y[0,-1])
         edge_dis.append(res.y[1,-1])
     plt.plot(v0,flap_dis,label="Flapwise Displacement at the tip")
@@ -41,8 +44,9 @@ if __name__ == '__main__':
     plt.show()
 
     #Constant velocity of 15 m/s without taking into account the blade velocity
-    res = structural_model.calculate_time_response_static_load(timestamps, initial_conditions, v0[13],rotational_frequancies[13],pitch_angles[13])
-    for i in range(4):
+    res, Mn, FF, FE = structural_model.calculate_time_response_static_load(timestamps, initial_conditions, v0[13],rotational_frequancies[13],pitch_angles[13])
+    #Plotting Displacement and velocities
+    for i in range(2):
         plt.plot(res.t, res.y[i, :], label=f'{labels[i]}')
     plt.legend()
     plt.grid()
@@ -51,17 +55,53 @@ if __name__ == '__main__':
     plt.show()
 
     #Constant velocity of 15 m/s with taking into account the blade velocity
-    res= structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[13],rotational_frequancies[13],pitch_angles[13],periodic="False",blade_velocities="True")
-    for i in range(4):
+    res, Mn_lst, FF_lst, FE_lst= structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[13],rotational_frequancies[13],pitch_angles[13],periodic="False",blade_velocities="True")
+    #Time Plot velocities and displacement
+    for i in range(2):
         plt.plot(timestamps, res[i, :], label=f'{labels[i]}')
     plt.legend()
     plt.grid()
     plt.xlabel("Time [s]")
     plt.ylabel("Tip displacement & Velocity [m] / [m/s]")
     plt.show()
+
+    #Time plot Forces and Moments
+    plt.plot(timestamps[1:],FF_lst, label = "Flapwise Force at the tip [N]")
+    plt.legend()
+    plt.grid()
+    plt.xlabel("Time [s]")
+    plt.ylabel("Force [N]")
+    plt.show()
+
+    plt.plot(timestamps[1:],FE_lst, label = "Edgewise Force at the tip [N]")
+    plt.legend()
+    plt.grid()
+    plt.xlabel("Time [s]")
+    plt.ylabel("Force [N]")
+    plt.show()
+
+    plt.plot(timestamps[1:],Mn_lst, label = "Root Bending Moment [N m]")
+    plt.legend()
+    plt.grid()
+    plt.xlabel("Time [s]")
+    plt.ylabel("Moment [Nm m]")
+    plt.show()
+
+    #Frequency Plot
+    for i in range(2):
+        fft_values = np.fft.fft(res[i, :])
+        magnitude = np.abs(fft_values)
+        plt.plot(frequencies, magnitude, label=f'{labels[i]}')
+    plt.legend()
+    plt.grid()
+    plt.xlabel("Frequency [Hz]")
+    plt.ylabel("Magnitude")
+    plt.show()
+
 
     #Varying velocity around 15 m/s without taking into account the blade velocity
-    res = structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[13],rotational_frequancies[13],pitch_angles[13],periodic="True",blade_velocities="False")
+    res, Mn_lst, FF_lst, FE_lst = structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[13],rotational_frequancies[13],pitch_angles[13],periodic="True",blade_velocities="False")
+    #Time Plot velocities and displacemen
     for i in range(4):
         plt.plot(timestamps, res[i, :], label=f'{labels[i]}')
     plt.legend()
@@ -70,12 +110,47 @@ if __name__ == '__main__':
     plt.ylabel("Tip displacement & Velocity [m] / [m/s]")
     plt.show()
 
+
     #Varying velocity around 15 m/s with taking into account the blade velocity
-    res = structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[13],rotational_frequancies[13],pitch_angles[13],periodic="True",blade_velocities="True")
-    for i in range(4):
+    res, Mn_lst, FF_lst, FE_lst = structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[13],rotational_frequancies[13],pitch_angles[13],periodic="True",blade_velocities="True")
+    #Time Plot
+    for i in range(2):
         plt.plot(timestamps, res[i, :], label=f'{labels[i]}')
     plt.legend()
     plt.grid()
     plt.xlabel("Time [s]")
     plt.ylabel("Tip displacement & Velocity [m] / [m/s]")
+    plt.show()
+
+    # Time plot Forces and Moments
+    plt.plot(timestamps[1:], FF_lst, label="Flapwise Force at the tip [N]")
+    plt.legend()
+    plt.grid()
+    plt.xlabel("Time [s]")
+    plt.ylabel("Force [N]")
+    plt.show()
+
+    plt.plot(timestamps[1:], FE_lst, label="Edgewise Force at the tip [N]")
+    plt.legend()
+    plt.grid()
+    plt.xlabel("Time [s]")
+    plt.ylabel("Force [N]")
+    plt.show()
+
+    plt.plot(timestamps[1:], Mn_lst, label="Root Bending Moment [N m]")
+    plt.legend()
+    plt.grid()
+    plt.xlabel("Time [s]")
+    plt.ylabel("Moment [Nm m]")
+    plt.show()
+
+    #Frequency Plot
+    for i in range(2):
+        fft_values = np.fft.fft(res[i, :])
+        magnitude = np.abs(fft_values)
+        plt.plot(frequencies, magnitude, label=f'{labels[i]}')
+    plt.legend()
+    plt.grid()
+    plt.xlabel("Frequency [Hz]")
+    plt.ylabel("Magnitude")
     plt.show()

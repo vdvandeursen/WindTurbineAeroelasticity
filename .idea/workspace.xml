@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="687e0206-750b-414c-aadd-88a0165e4019" name="Changes" comment="Dynamic responses added (where the blade velocity is reintroduced into the bem). Also added periodic motion&#10;Plots for 15m/s made in main">
+    <list default="true" id="687e0206-750b-414c-aadd-88a0165e4019" name="Changes" comment="Added some changes to cover more deliverables">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bem.py" beforeDir="false" afterPath="$PROJECT_DIR$/bem.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/structural_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/structural_model.py" afterDir="false" />
     </list>
@@ -175,7 +176,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717780402370</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Added some changes to cover more deliverables">
+      <option name="closed" value="true" />
+      <created>1717922958080</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1717922958080</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -199,7 +208,8 @@
     <MESSAGE value="Removed Power from bem outputs" />
     <MESSAGE value="Moved the calling of the BEM function for calculating the time response into the function in the structural model" />
     <MESSAGE value="Dynamic responses added (where the blade velocity is reintroduced into the bem). Also added periodic motion&#10;Plots for 15m/s made in main" />
-    <option name="LAST_COMMIT_MESSAGE" value="Dynamic responses added (where the blade velocity is reintroduced into the bem). Also added periodic motion&#10;Plots for 15m/s made in main" />
+    <MESSAGE value="Added some changes to cover more deliverables" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added some changes to cover more deliverables" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
