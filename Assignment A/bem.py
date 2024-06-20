@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from scipy.interpolate import interp1d
 from numpy import arccos, exp, sqrt, arctan, cos, sin, radians, degrees
-from Shape_function import ShapeFunction
+from shape_function import ShapeFunction
 
 
 def BEM(v0, omega, pitch, Vf="no input", Ve="no input", shape_functions="no input"):

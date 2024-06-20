@@ -3,6 +3,7 @@ from bem import BEM
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 if __name__ == '__main__':
     v0 = np.array([3, 4, 5, 6, 7, 8, 9, 10, 11, 11.4, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25])
     rotational_frequancies = np.array(
@@ -16,7 +17,7 @@ if __name__ == '__main__':
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3.83, 6.6, 8.7, 10.45, 12.06, 13.54, 14.92, 16.23, 17.47, 18.68, 19.85, 21.02,
          22.12, 23.15])
 
-    structural_model = StructuralModel(filepath='structural_data.csv')
+    structural_model = StructuralModel(filepath='./Assignment A/structural_data.csv')
 
     print(f'Nat freqs: {structural_model.natural_frequencies}')
 
