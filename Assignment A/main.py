@@ -19,6 +19,7 @@ if __name__ == '__main__':
 
     structural_model = StructuralModel(filepath='./Assignment A/structural_data.csv')
 
+
     print(f'Nat freqs: {structural_model.natural_frequencies}')
 
     labels = ['Flapwise displacement', 'Edgewise displacement', 'Flapwise velocity', 'Edgewise velocity']
@@ -37,7 +38,27 @@ if __name__ == '__main__':
 
     #Static displacement for varyind wind speed 3-25 m/s
     for v, omega, pitch in zip(v0, rotational_frequancies, pitch_angles):
-        res, Mn, FF, FE = structural_model.calculate_time_response_static_load(timestamps,initial_conditions,v,omega,pitch)
+        res, Mn, FF, FE = structural_model.calculate_time_response_static_load(timestamps,initial_conditions,v,omega,pitch,geometric_stiffness=False)
+        flap_dis.append(res.y[0,-1])
+        edge_dis.append(res.y[1,-1])
+        flap_vel.append(res.y[2, -1])
+        edge_vel.append(res.y[3, -1])
+
+    plt.plot(v0,flap_dis,label=f'{labels[0]}',color=colors[0])
+    plt.plot(v0,edge_dis,label=f'{labels[2]}',color=colors[1])
+    plt.legend()
+    plt.grid()
+    plt.xlabel("Wind Speed [m/s]")
+    plt.ylabel("Displacement [m]")
+    plt.show()
+
+    flap_dis = []
+    edge_dis = []
+    flap_vel = []
+    edge_vel = []
+    #Static displacement for varyind wind speed 3-25 m/s with geometric stiffness
+    for v, omega, pitch in zip(v0, rotational_frequancies, pitch_angles):
+        res, Mn, FF, FE = structural_model.calculate_time_response_static_load(timestamps,initial_conditions,v,omega,pitch,geometric_stiffness=True)
         flap_dis.append(res.y[0,-1])
         edge_dis.append(res.y[1,-1])
         flap_vel.append(res.y[2, -1])
@@ -57,7 +78,7 @@ if __name__ == '__main__':
     initial_conditions = np.array([flap_dis[index_v0],edge_dis[index_v0],flap_vel[index_v0],edge_vel[index_v0]])
 
     #Constant velocity of 15 m/s without taking into account the blade velocity
-    res, Mn, FF, FE = structural_model.calculate_time_response_static_load(timestamps, initial_conditions, v0[13],rotational_frequancies[13],pitch_angles[13])
+    res, Mn, FF, FE = structural_model.calculate_time_response_static_load(timestamps, initial_conditions, v0[13],rotational_frequancies[13],pitch_angles[13],geometric_stiffness=True)
     #Plotting Displacement and velocities
     for i in [2,0]:
         plt.plot(res.t, res.y[i, :], label=f'{labels[i]}',color=colors[i])
@@ -76,7 +97,7 @@ if __name__ == '__main__':
     plt.show()
 
     #Constant velocity of 15 m/s with taking into account the blade velocity
-    res, Mn_lst, FF_lst, FE_lst= structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[13],rotational_frequancies[13],pitch_angles[13],periodic="False",blade_velocities="True")
+    res, Mn_lst, FF_lst, FE_lst= structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[13],rotational_frequancies[13],pitch_angles[13],periodic=False,blade_velocities=True,geometric_stiffness=True)
     #Time Plot velocities and displacement
     for i in [2,0]:
         plt.plot(timestamps, res[i, :], label=f'{labels[i]}',color=colors[i])
@@ -130,7 +151,7 @@ if __name__ == '__main__':
 
 
     #Varying velocity around 15 m/s without taking into account the blade velocity
-    res, Mn_lst, FF_lst, FE_lst = structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[13],rotational_frequancies[13],pitch_angles[13],periodic="True",blade_velocities="False")
+    res, Mn_lst, FF_lst, FE_lst = structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[13],rotational_frequancies[13],pitch_angles[13],periodic=True,blade_velocities=False,geometric_stiffness=True)
     #Time Plot velocities and displacemen
     for i in [2,0]:
         plt.plot(timestamps, res[i, :], label=f'{labels[i]}',color=colors[i])
@@ -150,7 +171,7 @@ if __name__ == '__main__':
 
 
     #Varying velocity around 15 m/s with taking into account the blade velocity
-    res, Mn_lst, FF_lst, FE_lst = structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[13],rotational_frequancies[13],pitch_angles[13],periodic="True",blade_velocities="True")
+    res, Mn_lst, FF_lst, FE_lst = structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[13],rotational_frequancies[13],pitch_angles[13],periodic=True,blade_velocities=True,geometric_stiffness=True)
     #Time Plot
     for i in [0,2]:
         plt.plot(timestamps, res[i, :], label=f'{labels[i]}',color=colors[i])
