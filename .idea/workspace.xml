@@ -5,27 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="687e0206-750b-414c-aadd-88a0165e4019" name="Changes" comment="bem more readable">
-      <change afterPath="$PROJECT_DIR$/Assignment C/beddoes_leishman.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assignment C/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/WindTurbineAeroelasticity.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WindTurbineAeroelasticity.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Blade/Aero data/1.Cylinder1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/Blade/Aero data/1.Cylinder1.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Blade/Aero data/2.Cylinder2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/Blade/Aero data/2.Cylinder2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Blade/Aero data/3.DU40_A17.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/Blade/Aero data/3.DU40_A17.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Blade/Aero data/4.DU35_A17.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/Blade/Aero data/4.DU35_A17.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Blade/Aero data/5.DU30_A17.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/Blade/Aero data/5.DU30_A17.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Blade/Aero data/6.DU25_A17.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/Blade/Aero data/6.DU25_A17.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Blade/Aero data/7.DU21_A17.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/Blade/Aero data/7.DU21_A17.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Blade/Aero data/8.NACA64_A17.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/Blade/Aero data/8.NACA64_A17.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Blade/Aero data/Readme.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/Blade/Aero data/Readme.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Blade/Blade section/Blade section.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/Blade/Blade section/Blade section.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Blade/Blade section/Readme.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/Blade/Blade section/Readme.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shape_function.py" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/shape_function.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bem.py" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/bem.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/structural_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/structural_data.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/structural_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/structural_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assignment A/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,16 +46,16 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.bem_1.executor": "Run",
-    "Python.main.executor": "Debug",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/roele/PycharmProjects/WindTurbineAeroelasticity",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.bem_1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/roele/PycharmProjects/WindTurbineAeroelasticity&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\roele\PycharmProjects\WindTurbineAeroelasticity" />
@@ -128,8 +110,8 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.main" />
       <item itemvalue="Python.bem_1" />
+      <item itemvalue="Python.main" />
     </list>
     <recent_temporary>
       <list>
