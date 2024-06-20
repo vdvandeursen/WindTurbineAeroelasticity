@@ -86,7 +86,7 @@ class StructuralModel:
             thalf = (t0+t1)/2
             if periodic == "True":
                 v = V0 + 0.5 * np.cos(1.267 * thalf) + 0.085 * np.cos(2.534 * thalf) + 0.015 * np.cos(3.801 * thalf)
-            timestep = np.linspace(t0,t1,50)
+            timestep = np.linspace(t0,t1,10)
             if blade_velocities == "True":
                 Vf = input_conditions[2]
                 Ve = input_conditions[3]
