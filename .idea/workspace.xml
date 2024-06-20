@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="687e0206-750b-414c-aadd-88a0165e4019" name="Changes" comment="Update static plot">
+    <list default="true" id="687e0206-750b-414c-aadd-88a0165e4019" name="Changes" comment="Assignments divided into folders + bug fix csv reading">
+      <change afterPath="$PROJECT_DIR$/Assignment C/lecture_jupyter_notebook.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/WindTurbineAeroelasticity.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WindTurbineAeroelasticity.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assignment A/bem.py" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/bem.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assignment A/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assignment C/beddoes_leishman.py" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment C/beddoes_leishman.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assignment C/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment C/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,16 +49,16 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.bem_1.executor": "Run",
-    "Python.main.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/roele/PycharmProjects/WindTurbineAeroelasticity",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.bem_1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/roele/PycharmProjects/WindTurbineAeroelasticity&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\roele\PycharmProjects\WindTurbineAeroelasticity" />
@@ -191,13 +194,13 @@
       <option name="project" value="LOCAL" />
       <updated>1717000533486</updated>
     </task>
-    <task id="LOCAL-00008" summary="Update static plot">
+    <task id="LOCAL-00008" summary="Assignments divided into folders + bug fix csv reading">
       <option name="closed" value="true" />
-      <created>1718872284707</created>
+      <created>1718871762597</created>
       <option name="number" value="00008" />
       <option name="presentableId" value="LOCAL-00008" />
       <option name="project" value="LOCAL" />
-      <updated>1718872284707</updated>
+      <updated>1718871762597</updated>
     </task>
     <option name="localTasksCounter" value="9" />
     <servers />
@@ -229,15 +232,7 @@
     <MESSAGE value="structural model work in progress" />
     <MESSAGE value="bem broken?" />
     <MESSAGE value="bem more readable" />
-    <MESSAGE value="Update static plot" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update static plot" />
-  </component>
-  <component name="XDebuggerManager">
-    <watches-manager>
-      <configuration name="PythonConfigurationType">
-        <watch expression="x" />
-        <watch expression="__exception__" />
-      </configuration>
-    </watches-manager>
+    <MESSAGE value="Assignments divided into folders + bug fix csv reading" />
+    <option name="LAST_COMMIT_MESSAGE" value="Assignments divided into folders + bug fix csv reading" />
   </component>
 </project>

@@ -25,6 +25,10 @@ if __name__ == "__main__":
     def function_twist(r): return np.radians(14-14*r/length_blade)
     def function_chord(r): return 3*(1-r/length_blade) + 1
 
+    def Uinf(t, angle_azimuth, U0, case_dict):
+        omega = case_dict['OmegaR_U0'] * U0 / length_blade
+
+        return case_dict['U1_U0'] * U0 + case_dict['DeltaU'] * np.cos(omega * t) * np.cos(angle_azimuth)
 
 
     model = DynamicStallModel()
