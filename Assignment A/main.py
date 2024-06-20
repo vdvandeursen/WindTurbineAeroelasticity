@@ -26,8 +26,11 @@ if __name__ == '__main__':
     plt.figure()
     flap_dis = []
     edge_dis = []
-    timestamps = np.linspace(0, 400, 1000)
-    N = len(timestamps)
+    flap_vel = []
+    edge_vel = []
+    timestamps = np.linspace(0, 500, 1200)
+
+    N = len(timestamps[1000:])
     T = timestamps[1] - timestamps[0]
     frequencies = np.fft.fftfreq(N, T)
     initial_conditions = np.array([0,0,0,0])
@@ -37,14 +40,21 @@ if __name__ == '__main__':
         res, Mn, FF, FE = structural_model.calculate_time_response_static_load(timestamps,initial_conditions,v,omega,pitch)
         flap_dis.append(res.y[0,-1])
         edge_dis.append(res.y[1,-1])
+        flap_vel.append(res.y[2, -1])
+        edge_vel.append(res.y[3, -1])
+
     plt.plot(v0,flap_dis,label=f'{labels[0]}',color=colors[0])
     plt.plot(v0,edge_dis,label=f'{labels[2]}',color=colors[1])
-    plt.title("Static tip displasment for varying wind speed")
     plt.legend()
     plt.grid()
     plt.xlabel("Wind Speed [m/s]")
     plt.ylabel("Displacement [m]")
     plt.show()
+
+    wind_speed_dynamic = 15 # m/s
+    index_v0 = np.where(v0 == wind_speed_dynamic)[0][0]
+
+    initial_conditions = np.array([flap_dis[index_v0],edge_dis[index_v0],flap_vel[index_v0],edge_vel[index_v0]])
 
     #Constant velocity of 15 m/s without taking into account the blade velocity
     res, Mn, FF, FE = structural_model.calculate_time_response_static_load(timestamps, initial_conditions, v0[13],rotational_frequancies[13],pitch_angles[13])
@@ -108,7 +118,7 @@ if __name__ == '__main__':
 
     #Frequency Plot
     for i in range(2):
-        fft_values = np.fft.fft(res[i, :])
+        fft_values = np.fft.fft(res[i, 1000:])
         magnitude = np.abs(fft_values)
         plt.plot(frequencies[0:N//2-1], 2*magnitude[0:N//2-1], label=f'{labels[i]}')
     plt.yscale('log')
@@ -182,7 +192,7 @@ if __name__ == '__main__':
 
     #Frequency Plot
     for i in range(2):
-        fft_values = np.fft.fft(res[i, :])
+        fft_values = np.fft.fft(res[i, 1000:])
         magnitude = np.abs(fft_values)
         plt.plot(frequencies[0:N//2-1], 2*magnitude[0:N//2-1], label=f'{labels[i]}')
     plt.yscale('log')

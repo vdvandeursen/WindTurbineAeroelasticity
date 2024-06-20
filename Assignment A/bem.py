@@ -18,11 +18,11 @@ def BEM(v0, omega, pitch, Vf="no input", Ve="no input", shape_functions="no inpu
     a_prime = 0
 
     # Read blade section data
-    blade_sections = pd.read_csv('Blade/Blade section/Blade section.csv').to_numpy()
+    blade_sections = pd.read_csv('./Assignment A/Blade/Blade section/Blade section.csv').to_numpy()
 
     # Read aero data files
     import glob
-    airfoil_data_files = glob.glob('Blade/Aero data/*.csv')
+    airfoil_data_files = glob.glob('./Assignment A/Blade/Aero data/*.csv')
     airfoil_data = []
     for file in airfoil_data_files:
         airfoil_data.append(pd.read_csv(file).to_numpy())
