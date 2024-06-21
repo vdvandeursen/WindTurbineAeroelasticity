@@ -133,4 +133,4 @@ def BEM(v0, omega, pitch, Vf="no input", Ve="no input", shape_functions="no inpu
     Mt = sum(MT)  # Rotor torque
     Mn = sum(MN)  # Root moment
     P = Mt * omega * 3 * 0.944  # Power calculation
-    return Rx, Ff, Fe, Mn
+    return Rx, Ff/B, Fe/B, Mn/B
