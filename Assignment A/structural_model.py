@@ -59,15 +59,16 @@ class StructuralModel:
 
         self.force_vector = np.array(force_vect)
 
-    def N(self, omega):
-        result = integrate.cumtrapz(self.r*omega**2*self.rho_A,x=self.r)
-        result = np.append(0, result)
-        result = np.flip(result)
-        return result
+    def __N(self, omega):
+        result = []
+        for i,r_min in enumerate(self.r):
+            integral = integrate.trapz(self.r[i:]*omega**2*self.rho_A[i:],x=self.r[i:])
+            result.append(integral)
+        return np.array(result)
 
     def __set_geometric_stiffness_matrix(self,Omega):
         for i,phi in enumerate(self.shape_functions):
-            K_geo = integrate.trapz(self.N(Omega)*phi.d2f_dr2(self.r), x=self.r)
+            K_geo = integrate.trapz(self.__N(Omega)*phi.d2f_dr2(self.r), x=self.r)
             self.geometric_stiffness_matrix[i, i] = K_geo
 
     def calculate_time_response_static_load(self, timestamps,initial_conditions,V0,omega,pitch,Vf = 0, Ve = 0,geometric_stiffness=False):
