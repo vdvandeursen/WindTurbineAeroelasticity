@@ -6,7 +6,7 @@ from matplotlib.ticker import FuncFormatter,ScalarFormatter
 import os
 
 save_plot = True
-folder_path = r"C:\Users\olegr\Documents\0. AE Master Wind Energy\Q4 AE4W21-14 Wind Turbine Aeroelasticity\Assignements"
+folder_path = r'./Assignment A/Plots/'
 os.makedirs(folder_path, exist_ok=True)
 def one_decimal(x, pos):
     return f'{x:.1f}'
