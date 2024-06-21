@@ -68,7 +68,7 @@ class StructuralModel:
 
     def __set_geometric_stiffness_matrix(self,Omega):
         for i,phi in enumerate(self.shape_functions):
-            K_geo = integrate.trapz(self.__N(Omega)*phi.d2f_dr2(self.r), x=self.r)
+            K_geo = integrate.trapz(self.__N(Omega)*(phi.df_dr(self.r) ** 2), x=self.r)
             self.geometric_stiffness_matrix[i, i] = K_geo
 
     def calculate_time_response_static_load(self, timestamps,initial_conditions,V0,omega,pitch,Vf = 0, Ve = 0,geometric_stiffness=False):
