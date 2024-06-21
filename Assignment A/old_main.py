@@ -7,8 +7,8 @@ import os
 import itertools
 
 
-save_plot = True
-folder_path = r'./Assignment A/Plots/'
+save_plot = False
+folder_path = r"C:\Users\olegr\Documents\0. AE Master Wind Energy\Q4 AE4W21-14 Wind Turbine Aeroelasticity\Assignements"
 os.makedirs(folder_path, exist_ok=True)
 def one_decimal(x, pos):
     return f'{x:.1f}'
@@ -143,22 +143,20 @@ if __name__ == '__main__':
     index_v0 = np.where(v0 == wind_speed_dynamic)[0][0]
 
 def core_code(periodic_yes_no,blade_velocities_yes_no,geometric_stiffness_yes_no):
-    print(f"RUNNING CODE: Periodic wind: {periodic_yes_no}, Blade velocity: {blade_velocities_yes_no}, Geometric Stiffness: {geometric_stiffness_yes_no}")
-
     if periodic_yes_no:
-        add_periodic = True
+        add_period = True
         name_periodic = "periodic_15_ms"
     else:
-        add_periodic = False
+        add_period = False
         name_periodic = "const_15_ms"
     if blade_velocities_yes_no:
         add_blade_vel = True
-        name_blade_vel = "with_blade_vel"
+        name_periodic = "with_blade_vel"
     else:
         add_blade_vel = False
-        name_blade_vel = "no_blade_vel"
+        name_periodic = "no_blade_vel"
 
-    if geometric_stiffness_yes_no:
+    if geo_stiffness_yes_no:
         initial_conditions = np.array([flap_dis_with_stiff[index_v0],edge_dis_with_stiff[index_v0],flap_vel_with_stiff[index_v0],edge_vel_with_stiff[index_v0]])
         add_geo_stiff = True
         name_geo = "with_geo_stiff"
@@ -167,8 +165,30 @@ def core_code(periodic_yes_no,blade_velocities_yes_no,geometric_stiffness_yes_no
         add_geo_stiff = False
         name_geo = "no_geo_stiff"
 
-    #Generate results
-    res, Mn_lst, FF_lst, FE_lst= structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[index_v0],rotational_frequancies[index_v0],pitch_angles[index_v0],periodic=add_periodic,blade_velocities=add_blade_vel,geometric_stiffness=add_geo_stiff)
+    #Constant velocity of 15 m/s without taking into account the blade velocity
+    res, Mn, FF, FE = structural_model.calculate_time_response_static_load(timestamps, initial_conditions, v0[index_v0],rotational_frequancies[index_v0],pitch_angles[index_v0],geometric_stiffness=add_geo_stiff)
+
+    #Plotting Displacement
+    plt.plot(res.t[int(start_plot * N_T):int(end_time * N_T)], res.y[0, int(start_plot * N_T):int(end_time * N_T)], label=f'{labels[0]}',color=colors[0])
+    plt.legend(loc='upper right')
+    plt.grid()
+    adjust_x_y_ticks(start_plot,end_time)
+    plt.xlabel("Time [s]")
+    plt.ylabel("Tip displacement [m]")
+    plot_name = "Flapwise_disp_const_15ms_no_blade_vel_{}".format(add_to_name)
+    plot_saver(plot_name,save_plot)
+
+    plt.plot(res.t[int(start_plot * N_T):int(end_time * N_T)], res.y[1, int(start_plot * N_T):int(end_time * N_T)], label=f'{labels[1]}',color=colors[1])
+    plt.legend(loc='upper right')
+    plt.grid()
+    adjust_x_y_ticks(start_plot,end_time)
+    plt.xlabel("Time [s]")
+    plt.ylabel("Tip displacement [m]")
+    plot_name = "Edgewise_disp_const_15ms_no_blade_velo_{}".format(add_to_name)
+    plot_saver(plot_name,save_plot)
+
+    #Constant velocity of 15 m/s with taking into account the blade velocity
+    res, Mn_lst, FF_lst, FE_lst= structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[index_v0],rotational_frequancies[index_v0],pitch_angles[index_v0],periodic=False,blade_velocities=True,geometric_stiffness=add_geo_stiff)
     #Time Plot displacement
     plt.plot(timestamps[int(start_plot * N_T):int(end_time * N_T)], res[0, int(start_plot * N_T):int(end_time * N_T)],label=f'{labels[0]}', color=colors[0])
     plt.legend(loc='upper right')
@@ -176,7 +196,7 @@ def core_code(periodic_yes_no,blade_velocities_yes_no,geometric_stiffness_yes_no
     adjust_x_y_ticks(start_plot,end_time)
     plt.xlabel("Time [s]")
     plt.ylabel("Tip displacement [m]")
-    plot_name = "Flapwise_disp_{}_{}_{}".format(name_periodic,name_blade_vel,name_geo)
+    plot_name = "Flapwise_disp_const_15ms_with_blade_vel_{}".format(add_to_name)
     plot_saver(plot_name,save_plot)
 
     plt.plot(timestamps[int(start_plot * N_T):int(end_time * N_T)], res[1, int(start_plot * N_T):int(end_time * N_T)],label=f'{labels[1]}', color=colors[1])
@@ -185,7 +205,7 @@ def core_code(periodic_yes_no,blade_velocities_yes_no,geometric_stiffness_yes_no
     adjust_x_y_ticks(start_plot,end_time)
     plt.xlabel("Time [s]")
     plt.ylabel("Tip displacement [m]")
-    plot_name = "Edgewise_disp_{}_{}_{}".format(name_periodic,name_blade_vel,name_geo)
+    plot_name = "Edgewise_disp_const_15ms_with_blade_vel_{}".format(add_to_name)
     plot_saver(plot_name,save_plot)
 
     #Time plot Forces and Moments
@@ -195,7 +215,7 @@ def core_code(periodic_yes_no,blade_velocities_yes_no,geometric_stiffness_yes_no
     adjust_x_y_ticks(start_plot,end_time)
     plt.xlabel("Time [s]")
     plt.ylabel("Force at tip [N]")
-    plot_name = "Flapwise_force_{}_{}_{}".format(name_periodic,name_blade_vel,name_geo)
+    plot_name = "Flapwise_force_const_15ms_with_blade_vel_{}".format(add_to_name)
     plot_saver(plot_name,save_plot)
 
     plt.plot(timestamps[int(start_plot * N_T):int(end_time * N_T)-1],FE_lst[int(start_plot * N_T):int(end_time * N_T)],label=f'{labels[3]}', color=colors[3])
@@ -204,7 +224,7 @@ def core_code(periodic_yes_no,blade_velocities_yes_no,geometric_stiffness_yes_no
     adjust_x_y_ticks(start_plot,end_time)
     plt.xlabel("Time [s]")
     plt.ylabel("Force at tip [N]")
-    plot_name = "Edgewise_force_{}_{}_{}".format(name_periodic,name_blade_vel,name_geo)
+    plot_name = "Edgewise_force_const_15ms_with_blade_vel_{}".format(add_to_name)
     plot_saver(plot_name,save_plot)
 
     plt.plot(timestamps[int(start_plot * N_T):int(end_time * N_T)-1],Mn_lst[int(start_plot * N_T):int(end_time * N_T)],label=f'{labels[4]}', color=colors[4])
@@ -213,7 +233,7 @@ def core_code(periodic_yes_no,blade_velocities_yes_no,geometric_stiffness_yes_no
     adjust_x_y_ticks(start_plot, end_time)
     plt.xlabel("Time [s]")
     plt.ylabel("Moment [Nm m]")
-    plot_name = "Root_bend_moment_{}_{}_{}".format(name_periodic,name_blade_vel,name_geo)
+    plot_name = "Root_bend_moment_const_15ms_with_blade_vel_{}".format(add_to_name)
     plot_saver(plot_name,save_plot)
 
     #Frequency Plot
@@ -226,12 +246,98 @@ def core_code(periodic_yes_no,blade_velocities_yes_no,geometric_stiffness_yes_no
     plt.grid()
     plt.xlabel("Frequency [Hz]")
     plt.ylabel("Magnitude [-] ")
-    plot_name = "Frequency_plot_{}_{}_{}".format(name_periodic,name_blade_vel,name_geo)
+    plot_name = "Frequency_plot_const_15ms_with_blade_vel_{}".format(add_to_name)
     plot_saver(plot_name,save_plot)
+
+
+    #Varying velocity around 15 m/s without taking into account the blade velocity
+    res, Mn_lst, FF_lst, FE_lst = structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[index_v0],rotational_frequancies[index_v0],pitch_angles[index_v0],periodic=True,blade_velocities=False,geometric_stiffness=add_geo_stiff)
+    #Time Plot displacement
+    plt.plot(timestamps[int(start_plot * N_T):int(end_time * N_T)], res[0, int(start_plot * N_T):int(end_time * N_T)],label=f'{labels[0]}', color=colors[0])
+    plt.legend(loc='upper right')
+    plt.grid()
+    adjust_x_y_ticks(start_plot, end_time)
+    plt.xlabel("Time [s]")
+    plt.ylabel("Tip displacement [m]")
+    plot_name = "Flapwise_disp_varying_15ms_no_blade_vel_{}".format(add_to_name)
+    plot_saver(plot_name,save_plot)
+
+    plt.plot(timestamps[int(start_plot * N_T):int(end_time * N_T)], res[1, int(start_plot * N_T):int(end_time * N_T)],
+             label=f'{labels[1]}', color=colors[1])
+    plt.legend(loc='upper right')
+    plt.grid()
+    adjust_x_y_ticks(start_plot, end_time)
+    plt.xlabel("Time [s]")
+    plt.ylabel("Tip displacement [m]")
+    plot_name = "Edgewise_displ_varying_15ms_no_blade_vel_{}".format(add_to_name)
+    plot_saver(plot_name,save_plot)
+
+    #Varying velocity around 15 m/s with taking into account the blade velocity
+    res, Mn_lst, FF_lst, FE_lst = structural_model.calculate_time_response_dynamic_load(timestamps,initial_conditions,v0[index_v0],rotational_frequancies[index_v0],pitch_angles[index_v0],periodic=True,blade_velocities=True,geometric_stiffness=add_geo_stiff)
+    #Time Plot Displacement
+    plt.plot(timestamps[int(start_plot * N_T):int(end_time * N_T)], res[0, int(start_plot * N_T):int(end_time * N_T)],label=f'{labels[0]}', color=colors[0])
+    plt.legend(loc='upper right')
+    plt.grid()
+    adjust_x_y_ticks(start_plot, end_time)
+    plt.xlabel("Time [s]")
+    plt.ylabel("Tip displacement [m]")
+    plot_name = "Flapwise_displ_varying_15ms_with_blade_vel_{}".format(add_to_name)
+    plot_saver(plot_name,save_plot)
+
+    plt.plot(timestamps[int(start_plot * N_T):int(end_time * N_T)], res[1, int(start_plot * N_T):int(end_time * N_T)],label=f'{labels[1]}', color=colors[1])
+    plt.legend(loc='upper right')
+    plt.grid()
+    adjust_x_y_ticks(start_plot, end_time)
+    plt.xlabel("Time [s]")
+    plt.ylabel("Tip displacement [m]")
+    plot_name = "Edgewise_displ_varying_15ms_with_blade_vel_{}".format(add_to_name)
+    plot_saver(plot_name,save_plot)
+
+    # Time plot Forces and Moments
+    plt.plot(timestamps[int(start_plot * N_T):int(end_time * N_T)-1],FF_lst[int(start_plot * N_T):int(end_time * N_T)],label=f'{labels[2]}', color=colors[2])
+    plt.legend(loc='upper right')
+    plt.grid()
+    adjust_x_y_ticks(start_plot, end_time)
+    plt.xlabel("Time [s]")
+    plt.ylabel("Force at tip [N]")
+    plot_name = "Flapwise_force_varying_15ms_with_blade_vel_{}".format(add_to_name)
+    plot_saver(plot_name,save_plot)
+
+    plt.plot(timestamps[int(start_plot * N_T):int(end_time * N_T)-1],FE_lst[int(start_plot * N_T):int(end_time * N_T)],label=f'{labels[3]}', color=colors[3])
+    plt.legend(loc='upper right')
+    plt.grid()
+    adjust_x_y_ticks(start_plot, end_time)
+    plt.xlabel("Time [s]")
+    plt.ylabel("Force at tip [N]")
+    plot_name = "Edgewise_force_varying_15ms_with_blade_vel_{}".format(add_to_name)
+    plot_saver(plot_name,save_plot)
+
+    plt.plot(timestamps[int(start_plot * N_T):int(end_time * N_T)-1],Mn_lst[int(start_plot * N_T):int(end_time * N_T)],label=f'{labels[4]}', color=colors[4])
+    plt.legend(loc='upper right')
+    plt.grid()
+    adjust_x_y_ticks(start_plot, end_time)
+    plt.xlabel("Time [s]")
+    plt.ylabel("Moment [Nm m]")
+    plot_name = "Root_bend_moment_varying_15ms_with_blade_vel_{}".format(add_to_name)
+    plot_saver(plot_name,save_plot)
+
+    #Frequency Plot
+    for i in range(2):
+        fft_values = np.fft.fft(res[i,int(start_plot * N_T):int(end_time * N_T)])
+        magnitude = np.abs(fft_values)
+        plt.plot(frequencies[0:N//2-1], 2*magnitude[0:N//2-1], label=f'{labels[i]}',color=colors[i])
+    plt.yscale('log')
+    plt.legend(loc='upper right')
+    plt.grid()
+    plt.xlabel("Frequency [Hz]")
+    plt.ylabel("Magnitude [-] ")
+    plot_name = "Frequency_plot_varying_15ms_with_blade_vel_{}".format(add_to_name)
+    plot_saver(plot_name,save_plot)
+
 
 # Generate all combinations of True and False for three variables
 combinations_variables = list(itertools.product([True, False], repeat=3))
 
 # Iterate over each combination and run the code
 for combo in combinations_variables:
-    core_code(*combo)
+    run_code(*combo)
