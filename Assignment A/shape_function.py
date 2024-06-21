@@ -11,12 +11,12 @@ class ShapeFunction:
 
         return f
 
-    # def df_dr(self, r):
-    #     df_dr = 0
-    #     for i, c in enumerate(self.coefficients):
-    #         df_dr += i * c * r ** (i-1) / self.R ** i
-    #
-    #     return df_dr
+    def df_dr(self, r):
+        df_dr = 0
+        for i, c in enumerate(self.coefficients):
+            df_dr += i * c * r ** (i-1) / self.R ** i
+
+        return df_dr
 
     def d2f_dr2(self, r):
         d2f_dr2 = 0
