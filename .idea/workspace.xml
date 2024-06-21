@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="687e0206-750b-414c-aadd-88a0165e4019" name="Changes" comment="changes">
+    <list default="true" id="687e0206-750b-414c-aadd-88a0165e4019" name="Changes" comment="Updated fourier transforms">
       <change beforePath="$PROJECT_DIR$/.idea/WindTurbineAeroelasticity.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WindTurbineAeroelasticity.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assignment A/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assignment A/structural_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment A/structural_model.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +24,6 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -39,9 +37,6 @@
     &quot;accountId&quot;: &quot;b3bab87f-8668-42be-8326-c732d75d6612&quot;
   }
 }</component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="file://$USER_HOME$/anaconda3/Lib/site-packages/pandas/core/indexes/base.py" root0="SKIP_INSPECTION" />
-  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -54,18 +49,45 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Python.bem_1.executor&quot;: &quot;Run&quot;,
     &quot;Python.main.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/roele/PycharmProjects/WindTurbineAeroelasticity&quot;
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/roele/PycharmProjects/WindTurbineAeroelasticity&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\roele\PycharmProjects\WindTurbineAeroelasticity" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\vince\PycharmProjects\Studie\WindTurbineAeroelasticity\Assignment A" />
+    </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.main">
+    <configuration name="bem_1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="WindTurbineAeroelasticity" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bem_1.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="WindTurbineAeroelasticity" />
       <option name="ENV_FILES" value="" />
@@ -75,9 +97,8 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="C:\Users\roele\anaconda3" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Assignment A/main.py" />
@@ -89,11 +110,20 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.main" />
+      <item itemvalue="Python.bem_1" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.bem_1" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-babbdf50b680-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.15989.155" />
+        <option value="bundled-python-sdk-48aec45f0201-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.17011.127" />
       </set>
     </attachedChunks>
   </component>
@@ -122,96 +152,74 @@
       <option name="project" value="LOCAL" />
       <updated>1716971603358</updated>
     </task>
-    <task id="LOCAL-00003" summary="Changed BEM to output Edgewise and Flapwise Forces (per blade) and changed main code to make static plots 3-25 m/s">
+    <task id="LOCAL-00003" summary="shape functions early work">
       <option name="closed" value="true" />
-      <created>1717062610685</created>
+      <created>1716972164244</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1717062610685</updated>
+      <updated>1716972164244</updated>
     </task>
-    <task id="LOCAL-00004" summary="Added dynamic results">
+    <task id="LOCAL-00004" summary="structural model work in progress">
       <option name="closed" value="true" />
-      <created>1717076643647</created>
+      <created>1716973475778</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1717076643647</updated>
+      <updated>1716973475778</updated>
     </task>
-    <task id="LOCAL-00005" summary="fixed issue magnitude pitch">
+    <task id="LOCAL-00005" summary="structural model work in progress">
       <option name="closed" value="true" />
-      <created>1717076793844</created>
+      <created>1716975860805</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1717076793844</updated>
+      <updated>1716975860805</updated>
     </task>
-    <task id="LOCAL-00006" summary="Moved shape function to seperate file&#10;&#10;Changed BEM model to allow for Ve, Vf inputs and shape functions. Will now use these as inputs to calculate the results.">
+    <task id="LOCAL-00006" summary="structural model work in progress">
       <option name="closed" value="true" />
-      <created>1717768921072</created>
+      <created>1716994894758</created>
       <option name="number" value="00006" />
       <option name="presentableId" value="LOCAL-00006" />
       <option name="project" value="LOCAL" />
-      <updated>1717768921072</updated>
+      <updated>1716994894758</updated>
     </task>
-    <task id="LOCAL-00007" summary="Removed Power from bem outputs">
+    <task id="LOCAL-00007" summary="bem more readable">
       <option name="closed" value="true" />
-      <created>1717769637387</created>
+      <created>1717000533486</created>
       <option name="number" value="00007" />
       <option name="presentableId" value="LOCAL-00007" />
       <option name="project" value="LOCAL" />
-      <updated>1717769637387</updated>
+      <updated>1717000533486</updated>
     </task>
-    <task id="LOCAL-00008" summary="Moved the calling of the BEM function for calculating the time response into the function in the structural model">
+    <task id="LOCAL-00008" summary="Update static plot">
       <option name="closed" value="true" />
-      <created>1717771446781</created>
+      <created>1718872284707</created>
       <option name="number" value="00008" />
       <option name="presentableId" value="LOCAL-00008" />
       <option name="project" value="LOCAL" />
-      <updated>1717771446781</updated>
+      <updated>1718872284707</updated>
     </task>
-    <task id="LOCAL-00009" summary="Dynamic responses added (where the blade velocity is reintroduced into the bem). Also added periodic motion&#10;Plots for 15m/s made in main">
+    <task id="LOCAL-00009" summary="Updated fourier transforms">
       <option name="closed" value="true" />
-      <created>1717780402370</created>
+      <created>1718879523603</created>
       <option name="number" value="00009" />
       <option name="presentableId" value="LOCAL-00009" />
       <option name="project" value="LOCAL" />
-      <updated>1717780402370</updated>
+      <updated>1718879523603</updated>
     </task>
-    <task id="LOCAL-00010" summary="Added some changes to cover more deliverables">
-      <option name="closed" value="true" />
-      <created>1717922958080</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1717922958080</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Added Deliverables for root moment and Forces over time.">
-      <option name="closed" value="true" />
-      <created>1717928901685</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1717928901685</updated>
-    </task>
-    <task id="LOCAL-00012" summary="Added Deliverables for root moment and Forces over time.">
-      <option name="closed" value="true" />
-      <created>1717928908781</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1717928908781</updated>
-    </task>
-    <task id="LOCAL-00013" summary="changes">
-      <option name="closed" value="true" />
-      <created>1718871725911</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1718871725911</updated>
-    </task>
-    <option name="localTasksCounter" value="14" />
+    <option name="localTasksCounter" value="10" />
     <servers />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -227,17 +235,12 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added blade data" />
     <MESSAGE value="shape functions early work" />
-    <MESSAGE value="Changed BEM to output Edgewise and Flapwise Forces (per blade) and changed main code to make static plots 3-25 m/s" />
-    <MESSAGE value="Added dynamic results" />
-    <MESSAGE value="fixed issue magnitude pitch" />
-    <MESSAGE value="Moved shape function to seperate file&#10;&#10;Changed BEM model to allow for Ve, Vf inputs and shape functions. Will now use these as inputs to calculate the results." />
-    <MESSAGE value="Removed Power from bem outputs" />
-    <MESSAGE value="Moved the calling of the BEM function for calculating the time response into the function in the structural model" />
-    <MESSAGE value="Dynamic responses added (where the blade velocity is reintroduced into the bem). Also added periodic motion&#10;Plots for 15m/s made in main" />
-    <MESSAGE value="Added some changes to cover more deliverables" />
-    <MESSAGE value="Added Deliverables for root moment and Forces over time." />
-    <MESSAGE value="changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="changes" />
+    <MESSAGE value="structural model work in progress" />
+    <MESSAGE value="bem broken?" />
+    <MESSAGE value="bem more readable" />
+    <MESSAGE value="Update static plot" />
+    <MESSAGE value="Updated fourier transforms" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated fourier transforms" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
