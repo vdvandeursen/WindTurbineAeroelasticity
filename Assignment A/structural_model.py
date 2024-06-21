@@ -62,6 +62,7 @@ class StructuralModel:
     def N(self, omega):
         result = integrate.cumtrapz(self.r*omega**2*self.rho_A,x=self.r)
         result = np.append(0, result)
+        result = np.flip(result)
         return result
 
     def __set_geometric_stiffness_matrix(self,Omega):
