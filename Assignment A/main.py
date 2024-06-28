@@ -55,11 +55,12 @@ if __name__ == '__main__':
     plt.figure()
     N_T = 1000/400
     start_time = 0
-    start_plot = 400 # time from where you want to plot the output
+    start_plot = 480 # time from where you want to plot the output
+    start_plot_freq = 400 # time from where you want to plot the output for the frequency plot
     end_time = 500
     timestamps = np.linspace(0, end_time, int(end_time * N_T))
 
-    N = len(timestamps[int(start_plot * N_T):int(end_time * N_T)])
+    N = len(timestamps[int(start_plot_freq * N_T):int(end_time * N_T)])
     T = timestamps[1] - timestamps[0]
 
     frequencies = np.fft.fftfreq(N, T)
@@ -115,29 +116,51 @@ if __name__ == '__main__':
     #extra plots static displacement
     max_flap_no_stiff = np.max(flap_dis_no_stiff)
     max_flap_with_stiff = np.max(flap_dis_with_stiff)
-    plt.plot(v0, flap_dis_no_stiff/max_flap_no_stiff , label='Without geometrical stiffening', color=colors[0])
-    plt.plot(v0,flap_dis_with_stiff/max_flap_with_stiff, label='With geometrical stiffening', color=colors[0],linestyle="--")
+    plt.plot(v0, flap_dis_with_stiff / max_flap_with_stiff, label='With geometrical stiffening', color=colors[0])
+    plt.plot(v0, flap_dis_no_stiff/max_flap_no_stiff , label='Without geometrical stiffening', color=colors[0],linestyle="--")
     plt.legend(loc='upper right')
     plt.grid()
     plt.gca().yaxis.set_major_formatter(FuncFormatter(one_decimal))
     plt.xlabel("Wind Speed [m/s]")
     plt.xlim(v0[0],v0[-1])
     plt.ylabel("Normalized flapwise displacement [-]")
-    plot_name = "Static_displacement_flapwise"
+    plot_name = "Static_displacement_flapwise_normalized"
     plot_saver(plot_name,save_plot)
 
     max_edge_no_stiff = np.max(edge_dis_no_stiff)
     max_edge_with_stiff = np.max(edge_dis_with_stiff)
-    plt.plot(v0, edge_dis_no_stiff/max_edge_no_stiff, label='Without geometrical stiffening',  color=colors[1])
-    plt.plot(v0,edge_dis_with_stiff/max_edge_with_stiff, label='With geometrical stiffening', color=colors[1],linestyle="--")
+    plt.plot(v0, edge_dis_with_stiff / max_edge_with_stiff, label='With geometrical stiffening', color=colors[1])
+    plt.plot(v0, edge_dis_no_stiff/max_edge_no_stiff, label='Without geometrical stiffening',  color=colors[1],linestyle="--")
     plt.legend(loc='upper right')
     plt.grid()
     plt.gca().yaxis.set_major_formatter(FuncFormatter(one_decimal))
     plt.xlabel("Wind Speed [m/s]")
     plt.xlim(v0[0],v0[-1])
     plt.ylabel("Normalized edgewise displacement [-]")
-    plot_name = "Static_displacement_edgewise"
+    plot_name = "Static_displacement_edgewise_normalized"
     plot_saver(plot_name,save_plot)
+
+    plt.plot(v0, flap_dis_with_stiff, label='With geometrical stiffening', color=colors[0])
+    plt.plot(v0, flap_dis_no_stiff, label='Without geometrical stiffening', color=colors[0],linestyle="--")
+    plt.legend(loc='upper right')
+    plt.grid()
+    plt.gca().yaxis.set_major_formatter(FuncFormatter(one_decimal))
+    plt.xlabel("Wind Speed [m/s]")
+    plt.xlim(v0[0], v0[-1])
+    plt.ylabel("Normalized flapwise displacement [-]")
+    plot_name = "Static_displacement_flapwise"
+    plot_saver(plot_name, save_plot)
+
+    plt.plot(v0, edge_dis_with_stiff, label='With geometrical stiffening', color=colors[1])
+    plt.plot(v0, edge_dis_no_stiff, label='Without geometrical stiffening', color=colors[1],linestyle="--")
+    plt.legend(loc='upper right')
+    plt.grid()
+    plt.gca().yaxis.set_major_formatter(FuncFormatter(one_decimal))
+    plt.xlabel("Wind Speed [m/s]")
+    plt.xlim(v0[0], v0[-1])
+    plt.ylabel("Normalized edgewise displacement [-]")
+    plot_name = "Static_displacement_edgewise"
+    plot_saver(plot_name, save_plot)
 
     wind_speed_dynamic = 15 # m/s
     index_v0 = np.where(v0 == wind_speed_dynamic)[0][0]
@@ -218,7 +241,7 @@ def core_code(periodic_yes_no,blade_velocities_yes_no,geometric_stiffness_yes_no
 
     #Frequency Plot
     for i in range(2):
-        fft_values = np.fft.fft(res[i,int(start_plot * N_T):int(end_time * N_T)])
+        fft_values = np.fft.fft(res[i,int(start_plot_freq * N_T):int(end_time * N_T)])
         magnitude = np.abs(fft_values)
         plt.plot(frequencies[0:N//2-1], 2*magnitude[0:N//2-1], label=f'{labels[i]}',color=colors[i])
     plt.yscale('log')
