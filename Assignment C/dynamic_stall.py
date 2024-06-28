@@ -47,9 +47,13 @@ class DynamicStallModel:
 
     @property
     def c_lift_total(self):
+        print(f'c_lift {self.c_lift[-5:]}')
+        print(f'c_lift_f {self.c_lift_f[-5:]}')
+        print(f'c_lift_v {self.c_lift_v[-5:]}')
+
         return self.c_lift + self.c_lift_f + self.c_lift_v
 
-    def run(self, time_start, time_end, u_inf_func: callable, omega:float, pitch, max_iter=300, ctol=1e-2, num_time=100):
+    def run(self, time_start, time_end, u_inf_func: callable, omega:float, pitch, max_iter=200, ctol=1e-2, num_time=50):
         """Returns the cn at each position along the blade span for 0<r/R<1, given rotor operation conditions
 
         :param time:
@@ -60,19 +64,24 @@ class DynamicStallModel:
 
         # Input vectors
         time = np.linspace(time_start, time_end, num_time)
-        speed_blade_tangential = omega * self.r_R * self.span_blade  # local tangential speed of blade
 
-        # Initialize local flow properties
-        u_normal_local = u_inf_func(time)
-        u_tangential_local = speed_blade_tangential
-
+        # Result vectors
         Fn = np.zeros(shape=(len(self.chord), num_time))
         Ft = np.zeros(shape=(len(self.chord), num_time))
 
         # Perform Beddoes Leishman for each anulus
         for i, (chord, twist) in enumerate(zip(self.chord, self.twist)):
+            r = self.r_R[i] * self.span_blade
+
+            # Initialize local flow properties
+            induction_axial = 0.3
+            induction_tangential = 0
+
             for n in range(max_iter):
-                self.alpha_qs = np.arctan(u_normal_local / u_tangential_local) + twist + pitch
+                u_normal_local = (1 - induction_axial) * u_inf_func(time)
+                u_tangential_local = (1 + induction_tangential) * r * omega
+
+                self.alpha_qs = np.arctan(u_normal_local / u_tangential_local) - twist - pitch
 
                 self.dalphaqs_dt = np.gradient(self.alpha_qs,time)  # calculate the time derivative of the quasi-steady alpha
                 self.s_array = 2 * u_normal_local * time / chord  # define the array semi-chord time scale
@@ -84,7 +93,7 @@ class DynamicStallModel:
                 cl_total = self.c_lift_total  # local, for each time step
 
                 # Perform BEM to calculate induction factors per timestep
-                induction_axial, induction_tangential, Fn_local, Ft_local = self.blade_element_momentum(
+                induction_axial_new, induction_tangential_new, Fn_local, Ft_local = self.blade_element_momentum(
                     index=i,
                     alpha=self.alpha_qs,
                     cl_total=cl_total,
@@ -92,22 +101,17 @@ class DynamicStallModel:
                     omega=omega,
                     pitch=pitch
                 )
-                r = self.r_R[i] * self.span_blade
 
-                u_normal_local_new = (1 - induction_axial) * u_inf_func(time)
-                u_tangential_local = (1 + induction_tangential) * r * omega
-
-                err = u_normal_local - u_normal_local_new
-
-                if (np.abs(u_normal_local - u_normal_local_new) < ctol).all():
+                if (np.abs(induction_axial_new - induction_axial) < ctol).all():
                     Ft[i, :] = Ft_local
                     Fn[i, :] = Fn_local
                     break  # solution converged
                 else:
-                    u_normal_local = u_normal_local_new
+                    induction_axial = 0.9 * induction_axial + 0.1 * induction_axial_new
+                    induction_tangential = 0.9 * induction_tangential + 0.1 * induction_tangential_new
 
                 if n == max_iter - 1:
-                    print(f'ERROR: Max iterations reached but solution has not converged for anulus at r={r}:2f m.')
+                    print(f'ERROR: Max iterations reached but solution has not converged for anulus at r={r:.2f} m.')
                     # return False
 
         return Ft, Fn
@@ -158,7 +162,7 @@ class DynamicStallModel:
             F_tiploss = (2 / np.pi) * np.arccos(np.exp(-f_tiploss))
             f_hubloss = n_blades / 2 * (r - hubrad) / (r * np.sin(phi))
             F_hubloss = (2 / np.pi) * np.arccos(np.exp(-f_hubloss))
-            F = F_tiploss * F_hubloss
+            F = np.nan_to_num(F_tiploss * F_hubloss)
 
             # Determine a(t) and a'(t) at this location
             a[j] = 1 / (4 * F * (np.sin(phi)) ** 2 / (Sigma * Cn) + 1)
@@ -307,11 +311,11 @@ class DynamicStallModel:
         # we now determine the new expression of fprimeprime due to the boundary layer lag
         self.fprimeprime = fprime - Dbl
 
-        self.c_lift_f = self.dCn_dalpha * (
+        self.c_lift_f = np.nan_to_num(self.dCn_dalpha * (
                 (1 + np.sqrt(self.fprimeprime)) / 2
         ) ** 2 * (
                 self.alpha_equivalent - self.alpha0
-        ) + self.c_lift_noncirc
+        ) + self.c_lift_noncirc)
 
     def leading_edge_vortex_shedding(self, time):
         def vortime_function(vortime_i, delta_s, delta_alphaqs, Cnormal_prime, CN1=1.0093):

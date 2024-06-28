@@ -1,4 +1,4 @@
-from beddoes_leishman import DynamicStallModel
+from dynamic_stall import DynamicStallModel
 import numpy as np
 
 
