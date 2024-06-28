@@ -50,7 +50,7 @@ class StructuralModel:
 
     @property
     def natural_frequencies(self):
-        return np.sqrt(np.divide(self.stiffness_matrix, self.mass_matrix)).diagonal()
+        return np.sqrt(np.divide(self.stiffness_matrix, self.mass_matrix)).diagonal()/np.pi/2
     def __set_force_vector(self, f_edge, f_flap, r):
         force_vect = []
         for phi, f in zip(self.shape_functions, [f_flap, f_edge]):
