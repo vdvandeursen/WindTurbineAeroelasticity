@@ -41,7 +41,9 @@ if __name__ == "__main__":
 
         return case_dict['U1_U0'] * U0 + case_dict['DeltaU'] * np.cos(omega_fun * t) * np.cos(angle_azimuth)
 
-    for ls_mod, case in zip([True, False, True], [case2, case1, case1]):
+    # Runs four cases: DYN2 with leading edge sep, DYN1 without, DYN1 with, and DYN1 with steady aero
+    for ls_mod, case, steady_aero in zip([True, False, True, False], [case2, case1, case1, case1], [False, False, False, True]):
+    # for ls_mod, case, steady_aero in zip([False], [case1], [True]):
         if case['name'] == 'DYN2':
             dur = 30
         else:
@@ -63,7 +65,8 @@ if __name__ == "__main__":
             pitch=pitch_blade,
             omega=ratio_tip_speed * speed_wind_free_stream / span_blade,
             u_inf_func=lambda t: Uinf(t, U0=speed_wind_free_stream, case_dict=case),
-            leading_edge_separation=ls_mod
+            leading_edge_separation=ls_mod,
+            steady_aero=steady_aero
         )
 
         for quantity in ['alpha', 'F_t', 'F_n']:
@@ -107,7 +110,11 @@ if __name__ == "__main__":
                 fig.colorbar(surf, shrink=0.5, aspect=10, label=z_label)
 
                 plt.tight_layout()
-                plt.savefig(f'{case["name"]} {dur}s {quantity} {orientation} {"with" if ls_mod else "no"} LS.pdf')
+
+                if steady_aero:
+                    plt.savefig(f'{case["name"]} {dur}s {quantity} {orientation} STEADY AERO.pdf')
+                else:
+                    plt.savefig(f'{case["name"]} {dur}s {quantity} {orientation} {"with" if ls_mod else "no"} LS.pdf')
                 # plt.show()
 
     print('break')

@@ -55,7 +55,7 @@ class DynamicStallModel:
 
         return c_lift_total
 
-    def run(self, time_start, time_end, u_inf_func: callable, omega:float, pitch, max_iter=1000, ctol=0.05, num_time=1000, leading_edge_separation=True):
+    def run(self, time_start, time_end, u_inf_func: callable, omega:float, pitch, max_iter=1000, ctol=0.05, num_time=1000, leading_edge_separation=True, steady_aero=False):
         """Returns the cn at each position along the blade span for 0<r/R<1, given rotor operation conditions
 
         :param time:
@@ -118,7 +118,8 @@ class DynamicStallModel:
                     cl_total=cl_total,
                     u_normal_local=u_inf_func(time),
                     omega=omega,
-                    pitch=pitch
+                    pitch=pitch,
+                    steady_aero=steady_aero
                 )
 
                 induction_axial_new = induction_axial_new
@@ -154,7 +155,7 @@ class DynamicStallModel:
             'F_n': Fn / self.dr
         }
 
-    def blade_element_momentum(self, index, alpha, cl_total, u_normal_local, omega, pitch):
+    def blade_element_momentum(self, index, alpha, cl_total, u_normal_local, omega, pitch, steady_aero):
         # Constants
         n_blades = self.n_blades  # number of blades
         span_blade = self.span_blade  # rotor radius
@@ -166,8 +167,10 @@ class DynamicStallModel:
         # Airfoil data
         alphas = self.airfoil['angle_of_attack'].to_numpy()
         drag_coefficients = self.airfoil['drag_coefficient'].to_numpy()
+        lift_coefficients = self.airfoil['lift_coefficient'].to_numpy()
 
         interp_Cd = interp1d(alphas, drag_coefficients, fill_value="extrapolate")
+        interp_Cl = interp1d(alphas, lift_coefficients, fill_value="extrapolate")
 
         # 1d arrays, indexed ( t)
         a = np.zeros(len(alpha))
@@ -189,7 +192,10 @@ class DynamicStallModel:
             # phi = np.arctan(((1 - a) * u0) / ((1 + a_prime) * r * omega))
 
             # Find Cl and Cd
-            lift_coefficient = cl if alpha < np.radians(25) else 0
+            if not steady_aero:
+                lift_coefficient = cl if alpha < np.radians(25) else 0
+            else:
+                lift_coefficient = interp_Cl(np.degrees(alpha))
             drag_coefficient = interp_Cd(np.degrees(alpha))
 
             # Projection in and out of plane
