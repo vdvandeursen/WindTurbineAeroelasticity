@@ -11,10 +11,14 @@ class DynamicStallModel:
             span_blade,
             ratio_blade_start,
             n_blades,
-            airfoil
+            airfoil,
+            n_segments=40
     ):
         # Solver input vectors
-        self.r_R, self.dr = np.linspace(ratio_blade_start, 1, 100, retstep=True)
+        self.r_R, self.dr_R = np.linspace(ratio_blade_start, 0.99, n_segments, retstep=True)
+
+        self.r = self.r_R * span_blade
+        self.dr = self.dr_R * span_blade
 
         # Rotor properties
         self.span_blade = span_blade
@@ -32,12 +36,12 @@ class DynamicStallModel:
         self.airfoil = pd.read_csv(f'./{airfoil}.csv', names=col_names)
 
         # Solver output vectors
-        self.c_lift = None
-        self.c_lift_circ = None
-        self.c_lift_noncirc = None
-        self.c_lift_prime = None
-        self.c_lift_f = None
-        self.c_lift_v = None
+        self.c_lift = 0
+        self.c_lift_circ = 0
+        self.c_lift_noncirc = 0
+        self.c_lift_prime = 0
+        self.c_lift_f = 0
+        self.c_lift_v = 0
 
         self.alpha_qs = None
         self.dalphaqs_dt = None
@@ -47,13 +51,11 @@ class DynamicStallModel:
 
     @property
     def c_lift_total(self):
-        print(f'c_lift {self.c_lift[-5:]}')
-        print(f'c_lift_f {self.c_lift_f[-5:]}')
-        print(f'c_lift_v {self.c_lift_v[-5:]}')
+        c_lift_total = self.c_lift + self.c_lift_f + self.c_lift_v
 
-        return self.c_lift + self.c_lift_f + self.c_lift_v
+        return c_lift_total
 
-    def run(self, time_start, time_end, u_inf_func: callable, omega:float, pitch, max_iter=200, ctol=1e-2, num_time=50):
+    def run(self, time_start, time_end, u_inf_func: callable, omega:float, pitch, max_iter=1000, ctol=0.05, num_time=1000, leading_edge_separation=True):
         """Returns the cn at each position along the blade span for 0<r/R<1, given rotor operation conditions
 
         :param time:
@@ -62,6 +64,16 @@ class DynamicStallModel:
 
         """
 
+        # np.seterr(all='raise')
+
+        # Reset solution vectors:
+        self.c_lift = 0
+        self.c_lift_circ = 0
+        self.c_lift_noncirc = 0
+        self.c_lift_prime = 0
+        self.c_lift_f = 0
+        self.c_lift_v = 0
+
         # Input vectors
         time = np.linspace(time_start, time_end, num_time)
 
@@ -69,28 +81,35 @@ class DynamicStallModel:
         Fn = np.zeros(shape=(len(self.chord), num_time))
         Ft = np.zeros(shape=(len(self.chord), num_time))
 
+        alphas = np.zeros(shape=(len(self.chord), num_time))
+
+        # Initial guess
+        induction_axial = 0.5255
+        induction_tangential = 0.1144
+
         # Perform Beddoes Leishman for each anulus
         for i, (chord, twist) in enumerate(zip(self.chord, self.twist)):
             r = self.r_R[i] * self.span_blade
-
-            # Initialize local flow properties
-            induction_axial = 0.3
-            induction_tangential = 0
 
             for n in range(max_iter):
                 u_normal_local = (1 - induction_axial) * u_inf_func(time)
                 u_tangential_local = (1 + induction_tangential) * r * omega
 
-                self.alpha_qs = np.arctan(u_normal_local / u_tangential_local) - twist - pitch
+                self.alpha_qs = np.arctan2(u_normal_local, u_tangential_local) - twist - pitch
 
                 self.dalphaqs_dt = np.gradient(self.alpha_qs,time)  # calculate the time derivative of the quasi-steady alpha
                 self.s_array = 2 * u_normal_local * time / chord  # define the array semi-chord time scale
 
                 self.unsteady_flat_plate(time=time, chord=chord, u_inf=u_normal_local)
                 self.non_linear_trailing_edge_separation(time=time)
-                self.leading_edge_vortex_shedding(time=time)
+
+                if leading_edge_separation:
+                    self.leading_edge_vortex_shedding(time=time)
 
                 cl_total = self.c_lift_total  # local, for each time step
+
+                if np.isnan(cl_total).any():
+                    cl_total = np.nan_to_num(cl_total)
 
                 # Perform BEM to calculate induction factors per timestep
                 induction_axial_new, induction_tangential_new, Fn_local, Ft_local = self.blade_element_momentum(
@@ -102,19 +121,38 @@ class DynamicStallModel:
                     pitch=pitch
                 )
 
+                induction_axial_new = induction_axial_new
+                induction_tangential_new = induction_tangential_new
+
+                # induction_axial_new = np.mean(induction_axial_new)
+                # induction_tangential_new = np.mean(induction_tangential_new)
+
+                # if (np.abs(induction_axial_new - induction_axial) < ctol).sum() > 0.9 * num_time:
                 if (np.abs(induction_axial_new - induction_axial) < ctol).all():
                     Ft[i, :] = Ft_local
                     Fn[i, :] = Fn_local
+                    alphas[i, :] = np.degrees(self.alpha_qs)
+
+                    print(f'converged for r= r={r:.2f} m: avg axial induction={np.mean(induction_axial):.4f}, avg tangential induction={np.mean(induction_tangential):.4f}')
+                    # print(f'{induction_axial[0]:.5f} {induction_axial[-1]:.5f}')
+
                     break  # solution converged
                 else:
-                    induction_axial = 0.9 * induction_axial + 0.1 * induction_axial_new
-                    induction_tangential = 0.9 * induction_tangential + 0.1 * induction_tangential_new
+                    induction_axial = 0.99 * induction_axial + 0.01 * induction_axial_new
+                    induction_tangential = 0.99 * induction_tangential + 0.01 * induction_tangential_new
 
                 if n == max_iter - 1:
                     print(f'ERROR: Max iterations reached but solution has not converged for anulus at r={r:.2f} m.')
                     # return False
 
-        return Ft, Fn
+        return {
+            't': time,
+            'r': self.r,
+            'r_R': self.r_R,
+            'alpha': alphas,
+            'F_t': Ft / self.dr,
+            'F_n': Fn / self.dr
+        }
 
     def blade_element_momentum(self, index, alpha, cl_total, u_normal_local, omega, pitch):
         # Constants
@@ -143,14 +181,15 @@ class DynamicStallModel:
 
         Sigma = chord * n_blades / (2 * np.pi * r)  # Solidity
 
-        for j, (alpha, u0, cl) in enumerate(zip(alpha, u_normal_local, cl_total)):  # For each timestep, determine induction factors
+        # For each timestep, determine induction factors
+        for j, (alpha, u0, cl) in enumerate(zip(alpha, u_normal_local, cl_total)):
 
             phi = alpha + twist + pitch
 
             # phi = np.arctan(((1 - a) * u0) / ((1 + a_prime) * r * omega))
 
             # Find Cl and Cd
-            lift_coefficient = cl
+            lift_coefficient = cl if alpha < np.radians(25) else 0
             drag_coefficient = interp_Cd(np.degrees(alpha))
 
             # Projection in and out of plane
@@ -158,23 +197,35 @@ class DynamicStallModel:
             Ct = lift_coefficient * np.sin(phi) - drag_coefficient * np.cos(phi)
 
             # Prandtl loss
-            f_tiploss = n_blades / 2 * (span_blade - r) / (r * np.sin(phi))
-            F_tiploss = (2 / np.pi) * np.arccos(np.exp(-f_tiploss))
-            f_hubloss = n_blades / 2 * (r - hubrad) / (r * np.sin(phi))
-            F_hubloss = (2 / np.pi) * np.arccos(np.exp(-f_hubloss))
-            F = np.nan_to_num(F_tiploss * F_hubloss)
+            try:
+                f_tiploss = n_blades / 2 * (span_blade - r) / (r * np.sin(phi))
+                F_tiploss = (2 / np.pi) * np.arccos(np.exp(-f_tiploss))
+                f_hubloss = n_blades / 2 * (r - hubrad) / (r * np.sin(phi))
+                F_hubloss = (2 / np.pi) * np.arccos(np.exp(-f_hubloss))
+                F = F_tiploss * F_hubloss
+            except FloatingPointError:
+                F = 0.0001
 
-            # Determine a(t) and a'(t) at this location
-            a[j] = 1 / (4 * F * (np.sin(phi)) ** 2 / (Sigma * Cn) + 1)
-            a_prime[j] = 1 / (4 * F * np.sin(phi) * np.cos(phi) / (Sigma * Ct) - 1)
+                # Determine a(t) and a'(t) at this location
+                a[j] = 1 / (4 * F * np.sin(phi) ** 2 / (Sigma * Cn) + 1)
+                a_prime[j] = 1 / (4 * F * np.sin(phi) * np.cos(phi) / (Sigma * Ct) - 1)
+
             CN[j] = Cn
             CT[j] = Ct
 
             # Glauert correction
-            ac = 0.2
-            if a[j] > ac:
-                K = 4 * F * np.sin(phi) ** 2 / (Sigma * Cn)
-                a[j] = 0.5 * (2 + K * (1 - 2 * ac) - np.sqrt((K * (1 - 2 * ac) + 2) ** 2 + 4 * (K * ac ** 2 - 1)))
+            # ac = 0.2
+            # if a[j] > ac:
+            #     K = 4 * F * np.sin(phi) ** 2 / (Sigma * Cn)
+            #     a[j] = 0.5 * (2 + K * (1 - 2 * ac) - np.sqrt((K * (1 - 2 * ac) + 2) ** 2 + 4 * (K * ac ** 2 - 1)))
+
+            ct1 = 1.816
+            ct2 = 2 * np.sqrt(ct1) - ct1
+
+            if Cn >= ct2:
+                a[j] = (1 + (Cn - ct1) / (4 * (np.sqrt(ct1) - 1))) / F
+            else:
+                a[j] = (0.5 - 0.5 * np.sqrt(1 - Cn)) / F
 
             # Force in two directions and bending moment, as functions of time
         FN = (0.5 * rou * ((r * omega * (1 + a_prime)) ** 2 + (u_normal_local * (1 - a)) ** 2) * chord * CN * self.dr)

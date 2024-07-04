@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="687e0206-750b-414c-aadd-88a0165e4019" name="Changes" comment="Assignments divided into folders + bug fix csv reading">
-      <change afterPath="$PROJECT_DIR$/Assignment C/lecture_jupyter_notebook.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/WindTurbineAeroelasticity.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WindTurbineAeroelasticity.iml" afterDir="false" />
+    <list default="true" id="687e0206-750b-414c-aadd-88a0165e4019" name="Changes" comment="Beddoes leishman not converging">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20-6-2024_21_58__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_21-6-2024_18_23_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_21-6-2024_18_23__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assignment C/beddoes_leishman.py" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment C/beddoes_leishman.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assignment C/dynamic_stall.py" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment C/dynamic_stall.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assignment C/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment C/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -49,25 +50,27 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.bem_1.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/roele/PycharmProjects/WindTurbineAeroelasticity&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.bem_1.executor": "Run",
+    "Python.main (1).executor": "Run",
+    "Python.main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/vince/PycharmProjects/Studie/WindTurbineAeroelasticity/Assignment C",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\vince\PycharmProjects\Studie\WindTurbineAeroelasticity\Assignment C" />
       <recent name="C:\Users\roele\PycharmProjects\WindTurbineAeroelasticity" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\vince\PycharmProjects\Studie\WindTurbineAeroelasticity\Assignment A" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.main (1)">
     <configuration name="bem_1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="WindTurbineAeroelasticity" />
       <option name="ENV_FILES" value="" />
@@ -82,6 +85,28 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bem_1.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="WindTurbineAeroelasticity" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Assignment C" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Assignment C/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -115,9 +140,11 @@
     <list>
       <item itemvalue="Python.main" />
       <item itemvalue="Python.bem_1" />
+      <item itemvalue="Python.main (1)" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main (1)" />
         <item itemvalue="Python.bem_1" />
       </list>
     </recent_temporary>
@@ -202,7 +229,31 @@
       <option name="project" value="LOCAL" />
       <updated>1718871762597</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Beddoes leishman model work in progress. Need to refine calculation of alpha as function of u_inf">
+      <option name="closed" value="true" />
+      <created>1718884874711</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1718884874711</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Beddoes leishman model work in progress. Need to refine calculation of alpha as function of u_inf">
+      <option name="closed" value="true" />
+      <created>1719576043735</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1719576043735</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Beddoes leishman not converging">
+      <option name="closed" value="true" />
+      <created>1719579731589</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1719579731589</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -233,6 +284,45 @@
     <MESSAGE value="bem broken?" />
     <MESSAGE value="bem more readable" />
     <MESSAGE value="Assignments divided into folders + bug fix csv reading" />
-    <option name="LAST_COMMIT_MESSAGE" value="Assignments divided into folders + bug fix csv reading" />
+    <MESSAGE value="Beddoes leishman model work in progress. Need to refine calculation of alpha as function of u_inf" />
+    <MESSAGE value="Beddoes leishman not converging" />
+    <option name="LAST_COMMIT_MESSAGE" value="Beddoes leishman not converging" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Assignment C/beddoes_leishman.py</url>
+          <line>109</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <condition expression="np.isnan(induction_axial).any()" language="Python" />
+          <url>file://$PROJECT_DIR$/Assignment C/beddoes_leishman.py</url>
+          <line>96</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Assignment C/main.py</url>
+          <line>112</line>
+          <option name="timeStamp" value="51" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Assignment C/dynamic_stall.py</url>
+          <line>219</line>
+          <option name="timeStamp" value="66" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Assignment C/dynamic_stall.py</url>
+          <line>140</line>
+          <option name="timeStamp" value="68" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="np.degrees(self.alpha_qs)" language="Python" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
