@@ -25,8 +25,8 @@ def plot_saver(plot_name, save_plot):
 
 def adjust_x_y_ticks(start_plot,end_time):
     plt.xlim(start_plot,end_time)
-    plt.xticks(range(start_plot, end_time+ 1, 20),  # Tick positions
-               range(0, end_time - start_plot + 1, 20))  # Tick labels
+    plt.xticks(range(start_plot, end_time+ 1, 5),  # Tick positions
+               range(0, end_time - start_plot + 1, 5))  # Tick labels
     ax = plt.gca()
     ax.yaxis.set_major_formatter(ScalarFormatter(useMathText=True))
     ax.yaxis.get_offset_text().set_fontsize(10)
@@ -80,6 +80,16 @@ if __name__ == '__main__':
         edge_vel_no_stiff.append(res.y[3, -1])
 
     plt.plot(v0,flap_dis_no_stiff,label=f'{labels[0]}',color=colors[0])
+    plt.plot(v0, edge_dis_no_stiff, label=f'{labels[1]}', color=colors[1])
+    plt.legend(loc='upper right')
+    plt.grid()
+    plt.gca().yaxis.set_major_formatter(FuncFormatter(one_decimal))
+    plt.xlabel("Wind Speed [m/s]")
+    plt.xlim(v0[0], v0[-1])
+    plt.ylabel("Displacement [m]")
+    plot_name = "Static_displacement_no_geo_stiffening_flap"
+    plot_saver(plot_name, save_plot)
+
     plt.plot(v0,edge_dis_no_stiff,label=f'{labels[1]}',color=colors[1])
     plt.legend(loc='upper right')
     plt.grid()
@@ -87,7 +97,7 @@ if __name__ == '__main__':
     plt.xlabel("Wind Speed [m/s]")
     plt.xlim(v0[0], v0[-1])
     plt.ylabel("Displacement [m]")
-    plot_name = "Static_displacement_no_geo_stiffening"
+    plot_name = "Static_displacement_no_geo_stiffening_edge"
     plot_saver(plot_name,save_plot)
 
     flap_dis_with_stiff = []
@@ -103,6 +113,15 @@ if __name__ == '__main__':
         edge_vel_with_stiff.append(res.y[3, -1])
 
     plt.plot(v0,flap_dis_with_stiff,label=f'{labels[0]}',color=colors[0])
+    plt.legend(loc='upper right')
+    plt.grid()
+    plt.gca().yaxis.set_major_formatter(FuncFormatter(one_decimal))
+    plt.xlabel("Wind Speed [m/s]")
+    plt.xlim(v0[0], v0[-1])
+    plt.ylabel("Displacement [m]")
+    plot_name = "Static_displacement_with_geo_stiffening_flap"
+    plot_saver(plot_name, save_plot)
+
     plt.plot(v0,edge_dis_with_stiff,label=f'{labels[1]}',color=colors[1])
     plt.legend(loc='upper right')
     plt.grid()
@@ -110,7 +129,7 @@ if __name__ == '__main__':
     plt.xlabel("Wind Speed [m/s]")
     plt.xlim(v0[0],v0[-1])
     plt.ylabel("Displacement [m]")
-    plot_name = "Static_displacement_with_geo_stiffening"
+    plot_name = "Static_displacement_with_geo_stiffening_edge"
     plot_saver(plot_name,save_plot)
 
     #extra plots static displacement
