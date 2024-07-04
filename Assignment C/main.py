@@ -75,7 +75,7 @@ if __name__ == "__main__":
                 fig, ax = plt.subplots(subplot_kw={"projection": "3d"}, figsize=(8, 7))
 
                 if orientation == 'left':
-                    ax.view_init(elev=ax.elev, azim=ax.azim-45)
+                    ax.view_init(elev=ax.elev, azim=ax.azim-60)
 
                 # Make data.
                 X = res['r']
@@ -107,6 +107,8 @@ if __name__ == "__main__":
                     z_label = f'$\\{quantity}$ [deg]'
 
                 ax.set_zlabel(z_label)
+
+                # if orientation == 'right':
                 fig.colorbar(surf, shrink=0.5, aspect=10, label=z_label)
 
                 plt.tight_layout()
@@ -116,5 +118,7 @@ if __name__ == "__main__":
                 else:
                     plt.savefig(f'{case["name"]} {dur}s {quantity} {orientation} {"with" if ls_mod else "no"} LS.pdf')
                 # plt.show()
+
+                plt.close()
 
     print('break')
