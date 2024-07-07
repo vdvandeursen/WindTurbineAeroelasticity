@@ -114,9 +114,9 @@ if __name__ == "__main__":
                 plt.tight_layout()
 
                 if steady_aero:
-                    plt.savefig(f'{case["name"]} {dur}s {quantity} {orientation} STEADY AERO.pdf')
+                    plt.savefig(f'./plots/{case["name"]} {dur}s {quantity} {orientation} STEADY AERO.pdf')
                 else:
-                    plt.savefig(f'{case["name"]} {dur}s {quantity} {orientation} {"with" if ls_mod else "no"} LS.pdf')
+                    plt.savefig(f'./plots/{case["name"]} {dur}s {quantity} {orientation} {"with" if ls_mod else "no"} LS.pdf')
                 # plt.show()
 
                 plt.close()

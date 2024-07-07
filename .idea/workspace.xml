@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="687e0206-750b-414c-aadd-88a0165e4019" name="Changes" comment="Beddoes leishman not converging">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20-6-2024_21_58__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_21-6-2024_18_23_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_21-6-2024_18_23__Changes_.xml" beforeDir="false" />
+    <list default="true" id="687e0206-750b-414c-aadd-88a0165e4019" name="Changes" comment="plot change">
+      <change afterPath="$PROJECT_DIR$/Assignment C/run_steady_vs_unsteady_comparison.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/WindTurbineAeroelasticity.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WindTurbineAeroelasticity.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assignment C/dynamic_stall.py" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment C/dynamic_stall.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assignment C/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment C/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -55,6 +52,7 @@
     "Python.bem_1.executor": "Run",
     "Python.main (1).executor": "Run",
     "Python.main.executor": "Run",
+    "Python.run_steady_vs_unsteady_comparison.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "last_opened_file_path": "C:/Users/vince/PycharmProjects/Studie/WindTurbineAeroelasticity/Assignment C",
@@ -70,7 +68,7 @@
       <recent name="C:\Users\vince\PycharmProjects\Studie\WindTurbineAeroelasticity\Assignment A" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main (1)">
+  <component name="RunManager" selected="Python.run_steady_vs_unsteady_comparison">
     <configuration name="bem_1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="WindTurbineAeroelasticity" />
       <option name="ENV_FILES" value="" />
@@ -137,13 +135,37 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="run_steady_vs_unsteady_comparison" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="WindTurbineAeroelasticity" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Assignment C" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Assignment C/run_steady_vs_unsteady_comparison.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.main" />
+      <item itemvalue="Python.run_steady_vs_unsteady_comparison" />
       <item itemvalue="Python.bem_1" />
       <item itemvalue="Python.main (1)" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.run_steady_vs_unsteady_comparison" />
         <item itemvalue="Python.main (1)" />
         <item itemvalue="Python.bem_1" />
       </list>
@@ -253,7 +275,31 @@
       <option name="project" value="LOCAL" />
       <updated>1719579731589</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="plots">
+      <option name="closed" value="true" />
+      <created>1720101496346</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1720101496347</updated>
+    </task>
+    <task id="LOCAL-00013" summary="steady aero included">
+      <option name="closed" value="true" />
+      <created>1720102010495</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1720102010495</updated>
+    </task>
+    <task id="LOCAL-00014" summary="plot change">
+      <option name="closed" value="true" />
+      <created>1720105016343</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1720105016343</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -286,7 +332,10 @@
     <MESSAGE value="Assignments divided into folders + bug fix csv reading" />
     <MESSAGE value="Beddoes leishman model work in progress. Need to refine calculation of alpha as function of u_inf" />
     <MESSAGE value="Beddoes leishman not converging" />
-    <option name="LAST_COMMIT_MESSAGE" value="Beddoes leishman not converging" />
+    <MESSAGE value="plots" />
+    <MESSAGE value="steady aero included" />
+    <MESSAGE value="plot change" />
+    <option name="LAST_COMMIT_MESSAGE" value="plot change" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -304,17 +353,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Assignment C/main.py</url>
-          <line>112</line>
+          <line>123</line>
           <option name="timeStamp" value="51" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Assignment C/dynamic_stall.py</url>
-          <line>219</line>
+          <line>225</line>
           <option name="timeStamp" value="66" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Assignment C/dynamic_stall.py</url>
-          <line>140</line>
+          <line>141</line>
           <option name="timeStamp" value="68" />
         </line-breakpoint>
       </breakpoints>
